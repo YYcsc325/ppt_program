@@ -24,7 +24,7 @@
   "sideEffects": [
     "*.css"
   ],
-  "homepage": "https://yycsc325.github.io/ppt_program/",
+  "homepage": ".",
   "dependencies": {
     "@ant-design/pro-layout": "^6.5.0",
     "react": "17.x",
