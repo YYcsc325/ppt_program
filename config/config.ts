@@ -2,6 +2,7 @@ import { defineConfig } from 'umi';
 import path from 'path';
 // import CaseSensitivePathsWebpackPlugin from 'case-sensitive-paths-webpack-plugin';
 const target = 'http://localhost:8000';
+const env: any = process.env.NODE_ENV;
 
 /**
  * @params base 打包路径  base: "/docs"
@@ -21,7 +22,6 @@ export default defineConfig({
     type: 'none',
     exclude: [],
   },
-  publicPath: './',
   hash: true,
   targets: {
     ie: 11,
@@ -43,6 +43,8 @@ export default defineConfig({
   history: {
     type: 'hash',
   },
+  publicPath: env === 'dev' ? './' : 'https://yycsc325.github.io/ppt_program/', // 部署到github上改变script的资源引入路径
+  outputPath: 'build', // gh-pages 部署默认路径
   proxy: {
     '/dt': {
       target,
