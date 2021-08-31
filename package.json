@@ -1,6 +1,6 @@
 {
   "private": true,
-  "homepage": ".",
+  "homepage": "./dist",
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
