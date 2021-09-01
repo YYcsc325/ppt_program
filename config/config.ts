@@ -35,16 +35,13 @@ export default defineConfig({
   title: 'inforgram',
   favicon: 'https://cdn.jifo.co/favicon/favicon-32x32.png',
   metas: [{ name: 'description', content: 'Welcome come to inforgram' }],
-  routes: [
-    { path: '/', component: '@/pages/index' },
-    { component: '@/pages/404' },
-  ],
-
+  routes: [{ path: '/', component: '@/pages/index' }],
   history: {
     type: 'hash',
   },
-  publicPath: env === 'dev' ? './' : 'https://yycsc325.github.io/ppt_program/', // 部署到github上改变script的资源引入路径
-  outputPath: 'build', // gh-pages 部署默认路径
+  publicPath:
+    env === 'development' ? './' : 'https://yycsc325.github.io/ppt_program/', // 部署到github上改变script的资源引入路径
+  outputPath: 'build', // umi打包默认打成dist文件， gh-pages构建部署默认路径build
   proxy: {
     '/dt': {
       target,
