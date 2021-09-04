@@ -16,6 +16,7 @@ const env: any = process.env.NODE_ENV;
  * @params routes 路由配置
  * @params targets 兼容浏览器
  * @params publicPath 资源访问路径
+ * @params fastRefresh 快速更新页面
  */
 
 export default defineConfig({
@@ -51,6 +52,8 @@ export default defineConfig({
       pathRewrite: { '^/dt': '' },
     },
   },
+
+  // fastRefresh: {},
   // base: "/docs/",
   // publicPath: "/static/",
   // ctoken: true,

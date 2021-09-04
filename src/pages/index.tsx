@@ -12,7 +12,7 @@ const editPagePrefixcls = utils.createPrefixCls('container', styles, 'ppt');
 
 interface IPageProps extends IRouteComponentProps, IPageConnectProps {}
 
-const editPage: React.FC<IPageProps> = ({ screening }) => {
+const EditPage: React.FC<IPageProps> = ({ screening }) => {
   return (
     <div className={editPagePrefixcls()}>
       {screening ? <Scrren /> : <Editor />}
@@ -20,4 +20,4 @@ const editPage: React.FC<IPageProps> = ({ screening }) => {
   );
 };
 
-export default connect(editPage);
+export default EditPage;
