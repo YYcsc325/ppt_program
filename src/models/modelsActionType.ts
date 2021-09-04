@@ -1,18 +1,3 @@
-const createActions: createActionsType = (model) => {
-  var keys = Object.keys(model.effects || {}).concat(
-    Object.keys(model.reducers || {}),
-  );
-  return keys.reduce(function (acc: any, key) {
-    acc[key] = function (payload: any) {
-      return {
-        type: ''.concat(model.namespace, '/').concat(key),
-        payload: payload,
-      };
-    };
-    return acc;
-  }, {});
-};
-
 export interface IDvaModel<S = any, A = any> {
   namespace: string;
   state: S;
@@ -65,5 +50,3 @@ export type createActionsType = <M extends IDvaModel>(
 ) => {
   [key in keyof (M['effects'] & M['reducers'])]: DvaDispatchAction<M, key>;
 };
-
-export { createActions };

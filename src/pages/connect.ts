@@ -1,16 +1,12 @@
-import { connect, Dispatch } from 'umi';
-import { editorActions } from '@/models/editor';
-import { AppStore } from '@/store';
+import { connect } from 'umi';
+import { AppStore } from '@/models/modelsStateType';
 
-const mapStateToProps = ({ editor }: AppStore) => {
-  return {};
+const mapStateToProps = ({ page }: AppStore) => {
+  return {
+    screening: page.screening,
+  };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {};
-};
+export type IPageConnectProps = ReturnType<typeof mapStateToProps>;
 
-export type IConnectProps = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps);
+export default connect(mapStateToProps);

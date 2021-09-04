@@ -1,0 +1,40 @@
+.pt-editor-header {
+  height: 40px;
+  background-color: #fff;
+  user-select: none;
+  border-bottom: 1px solid @border-color;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+
+  &-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-menu-item {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    padding: 0 10px;
+    transition: background-color @transition-delay;
+    cursor: pointer;
+
+    &:hover {
+      background-color: @light-gray;
+    }
+  }
+  &-hotkey-doc {
+    height: 100%;
+    font-size: 12px;
+  }
+}
