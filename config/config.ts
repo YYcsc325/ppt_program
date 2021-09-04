@@ -1,5 +1,6 @@
 import { defineConfig } from 'umi';
 import path from 'path';
+import theme from './theme';
 // import CaseSensitivePathsWebpackPlugin from 'case-sensitive-paths-webpack-plugin';
 const target = 'http://localhost:8000';
 const env: any = process.env.NODE_ENV;
@@ -18,11 +19,13 @@ const env: any = process.env.NODE_ENV;
  */
 
 export default defineConfig({
+  theme,
+  hash: true,
+  title: 'inforgram',
   nodeModulesTransform: {
     type: 'none',
     exclude: [],
   },
-  hash: true,
   targets: {
     ie: 11,
   },
@@ -32,7 +35,6 @@ export default defineConfig({
   locale: {
     default: 'zh-CN',
   },
-  title: 'inforgram',
   favicon: 'https://cdn.jifo.co/favicon/favicon-32x32.png',
   metas: [{ name: 'description', content: 'Welcome come to inforgram' }],
   routes: [{ path: '/', component: '@/pages/index' }],
@@ -49,7 +51,6 @@ export default defineConfig({
       pathRewrite: { '^/dt': '' },
     },
   },
-
   // base: "/docs/",
   // publicPath: "/static/",
   // ctoken: true,
