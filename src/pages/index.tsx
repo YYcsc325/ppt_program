@@ -20,4 +20,4 @@ const EditPage: React.FC<IPageProps> = ({ screening }) => {
   );
 };
 
-export default EditPage;
+export default connect(EditPage);
