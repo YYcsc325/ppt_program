@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Dropdown, Menu, Drawer } from 'antd';
 import { utils } from 'react-dtcomponents';
 
-import hotkeys from '@/pages/config/hotKey';
+import hotkeys from '@/config/hotKey';
 
 import HotKey from '../conponents/HotKey';
 import styles from './index.less';

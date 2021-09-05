@@ -38,7 +38,7 @@ export default defineConfig({
   },
   favicon: 'https://cdn.jifo.co/favicon/favicon-32x32.png',
   metas: [{ name: 'description', content: 'Welcome come to inforgram' }],
-  routes: [{ path: '/', component: '@/pages/index' }],
+  routes: [{ path: '/', component: '@/pages/home' }],
   history: {
     type: 'hash',
   },

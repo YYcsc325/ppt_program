@@ -1,5 +1,5 @@
-import { PageState } from './page';
+import { HomeState } from './home';
 
 export type AppStore = {
-  page: PageState;
+  home: HomeState;
 };
