@@ -1,8 +1,7 @@
 import { defineConfig } from 'umi';
 import path from 'path';
 import theme from './theme';
-// import CaseSensitivePathsWebpackPlugin from 'case-sensitive-paths-webpack-plugin';
-const target = 'http://localhost:8000';
+
 const env: any = process.env.NODE_ENV;
 
 /**
@@ -46,19 +45,5 @@ export default defineConfig({
   // publicPath:
   //   env === 'development' ? './' : 'https://yycsc325.github.io/ppt_program/', // 部署到github上改变script的资源引入路径
   // outputPath: 'build', // umi打包默认打成dist文件， gh-pages构建部署默认路径build
-  proxy: {
-    '/dt': {
-      target,
-      changeOrigin: true,
-      pathRewrite: { '^/dt': '' },
-    },
-  },
-
   // fastRefresh: {},
-  // base: "/docs/",
-  // publicPath: "/static/",
-  // ctoken: true,
-  // chainWebpack(chain) {
-  //   chain.plugin('sensitive').use(CaseSensitivePathsWebpackPlugin, []);
-  // },
 });
