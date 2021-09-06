@@ -1,0 +1,42 @@
+@import '../../../../assets/variable.less';
+
+.ppt-thumbnails {
+  width: 160px;
+  height: 100%;
+  flex-shrink: 0;
+  border-right: solid 1px @ly-border-color;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+
+  &-add-slide {
+    height: 40px;
+    font-size: 12px;
+    display: flex;
+    flex-shrink: 0;
+    border-bottom: 1px solid @ly-border-color;
+    cursor: pointer;
+  }
+
+  &-btn {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      background-color: @ly-light-gray;
+    }
+  }
+
+  &-select-btn {
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid @ly-border-color;
+    &:hover {
+      background-color: @ly-light-gray;
+    }
+  }
+}

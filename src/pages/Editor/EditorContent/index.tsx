@@ -1,7 +1,21 @@
 import React from 'react';
+import { utils } from 'react-dtcomponents';
 
-const EditorContent = () => {
-  return <div>EditorContent</div>;
+import Thumbnails from './Thumbnails';
+import styles from './index.less';
+
+const editorContentPrefixCls = utils.createPrefixCls(
+  'editor-content',
+  styles,
+  'ppt',
+);
+
+const EditorContent: React.FC = () => {
+  return (
+    <div className={editorContentPrefixCls()}>
+      <Thumbnails />
+    </div>
+  );
 };
 
 export default EditorContent;

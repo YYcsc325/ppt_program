@@ -1,8 +1,10 @@
-.pt-editor-header {
+@import '../../../assets/variable.less';
+
+.ppt-editor-header {
   height: 40px;
   background-color: #fff;
   user-select: none;
-  border-bottom: 1px solid @border-color;
+  border-bottom: 1px solid @ly-border-color;
   display: flex;
   justify-content: space-between;
   padding: 0 10px;
@@ -26,11 +28,11 @@
     align-items: center;
     font-size: 14px;
     padding: 0 10px;
-    transition: background-color @transition-delay;
+    transition: background-color @ly-transition-delay;
     cursor: pointer;
 
     &:hover {
-      background-color: @light-gray;
+      background-color: @ly-light-gray;
     }
   }
   &-hotkey-doc {

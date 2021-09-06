@@ -10,7 +10,7 @@ import styles from './index.less';
 const editorHeaderPrefixCls = utils.createPrefixCls(
   'editor-header',
   styles,
-  'pt',
+  'ppt',
 );
 
 const EditorHeader: React.FC = () => {

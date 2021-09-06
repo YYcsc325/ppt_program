@@ -16,10 +16,6 @@ export default defineConfig({
   routes: [{ path: '/', component: '@/pages/index' }],
 
   /** 全局less变量 */
-  theme: {
-    'border-color': '#eee',
-    'transition-delay': '.2s',
-    'light-gray': '#f9f9f9',
-  },
+  theme: {},
   fastRefresh: {},
 });
