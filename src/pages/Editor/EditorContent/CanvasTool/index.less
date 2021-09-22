@@ -1,0 +1,41 @@
+@import '../../../../assets/variable.less';
+
+.ppt-canvas-tool {
+  position: relative;
+  border-bottom: 1px solid @ly-border-color;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 13px;
+  user-select: none;
+  height: 40px;
+
+  &-left-handler {
+    display: flex;
+    align-items: center;
+  }
+
+  &-handler-item {
+    margin: 0 10px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  &-disable {
+    opacity: 0.5;
+  }
+
+  &-add-element-handler {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+  }
+
+  &-right-handler {
+    display: flex;
+    align-items: center;
+  }
+}
