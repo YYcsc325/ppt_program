@@ -8,3 +8,10 @@ declare module '*.svg' {
   const url: string;
   export default url;
 }
+
+// 全局Window模块定义
+declare interface Window {}
+
+declare var $: () => {};
+
+declare function show(params: string): void;
