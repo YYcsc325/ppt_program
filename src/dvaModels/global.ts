@@ -1,4 +1,7 @@
-import { ActionWithPayload, createActions } from '../types/modelsActionType';
+import {
+  ActionWithPayload,
+  createActions,
+} from './modelTypes/modelsActionType';
 
 const initGlobalState = {
   screening: false, // 是否进入放映状态
