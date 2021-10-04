@@ -21,6 +21,13 @@ const CanvasTool: React.FC = () => {
 
   /** 插入图表 */
   const addData = () => {};
+
+  /** 缩小ppt图片 */
+  const handleMinus = () => {};
+
+  /** 放大ppt图片 */
+  const handlePlus = () => {};
+
   return (
     <div className={canvasToolPrefixCls()}>
       <div className={canvasToolPrefixCls('left-handler')}>
@@ -61,7 +68,11 @@ const CanvasTool: React.FC = () => {
           </span>
         </Tooltip>
       </div>
-      <div className={canvasToolPrefixCls('right-handler')}></div>
+      <div className={canvasToolPrefixCls('right-handler')}>
+        <IconFont type="minus" onClick={handleMinus} />
+        <span style={{ margin: '0 10px' }}>百分比</span>
+        <IconFont type="plus" onClick={handlePlus} />
+      </div>
     </div>
   );
 };

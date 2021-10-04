@@ -1,8 +1,12 @@
 import React from 'react';
 import { utils } from 'react-dtcomponents';
 
+import Canvas from './Canvas';
+import Remark from './Remark';
+import Toolbar from './Toolbar';
 import Thumbnails from './Thumbnails';
 import CanvasTool from './CanvasTool';
+
 import styles from './index.less';
 
 const editorContentPrefixCls = utils.createPrefixCls(
@@ -17,6 +21,9 @@ const EditorContent: React.FC = () => {
       <Thumbnails />
       <div className={editorContentPrefixCls('center')}>
         <CanvasTool />
+        <Canvas />
+        <Remark />
+        <Toolbar />
       </div>
     </div>
   );

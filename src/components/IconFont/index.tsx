@@ -2,10 +2,17 @@ import React from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
 
 const Font = createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_2554036_ly3tvu0857.js',
+  scriptUrl: '//at.alicdn.com/t/font_2554036_zkji80l7w7p.js',
 });
 
-export type IconFontTypes = 'redo' | 'revoke' | 'text' | 'picture' | 'data';
+export type IconFontTypes =
+  | 'redo'
+  | 'revoke'
+  | 'text'
+  | 'picture'
+  | 'data'
+  | 'plus'
+  | 'minus';
 
 export interface IconFontProps {
   type: IconFontTypes;

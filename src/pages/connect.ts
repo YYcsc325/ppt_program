@@ -1,9 +1,9 @@
 import { connect } from 'umi';
-import { AppStore } from '@/models/modelsStateType';
+import { AppStore } from '@/models/types/modelsStateType';
 
-const mapStateToProps = ({ home }: AppStore) => {
+const mapStateToProps = ({ global }: AppStore) => {
   return {
-    screening: home?.screening,
+    screening: global?.screening,
   };
 };
 
