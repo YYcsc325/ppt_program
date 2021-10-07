@@ -4,12 +4,16 @@ import { throttle } from 'lodash';
 import { KEYS } from '@/config/hotKey';
 import { useModel } from 'umi';
 
+// import useScaleCanvas from '@/models/useScaleCanvas';
+// import useSlideHandler from '@/models/useSlideHandler';
+
 import styles from './index.less';
 
 const canvasPrefixCls = utils.createPrefixCls('canvas', styles, 'ppt');
 
 const Canvas: React.FC = () => {
   const { remarkHeight } = useModel('useCanvasRemarkModel' as any);
+
   const canvasRef = useRef(null);
 
   // 滚动鼠标
@@ -20,6 +24,7 @@ const Canvas: React.FC = () => {
   //   leading: true,
   //   trailing: false,
   // });
+
   // const throttleUpdateSlideIndex = throttle(updateSlideIndex, 300, {
   //   leading: true,
   //   trailing: false,
@@ -34,7 +39,7 @@ const Canvas: React.FC = () => {
   //   removeAllRanges();
   // };
 
-  // const handleMousewheelCanvas = (e: WheelEvent) => {
+  // const handleMousewheelCanvas = (e: React.WheelEvent) => {
   //   e.preventDefault();
 
   //   // 按住Ctrl键时：缩放画布
@@ -54,6 +59,7 @@ const Canvas: React.FC = () => {
       ref={canvasRef}
       className={canvasPrefixCls()}
       style={{ height: `calc(100% - ${remarkHeight + 40}px)` }}
+      // onWheel={handleMousewheelCanvas}
       // onMouseDown={handleClickBlankArea}
     >
       Canvas

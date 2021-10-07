@@ -2,23 +2,27 @@ import React from 'react';
 
 import { utils } from 'react-dtcomponents';
 import { DisplayView } from '@/components';
-import { useModel } from 'umi';
 
 import Scrren from './Screen';
 import Editor from './Editor';
 import styles from './index.less';
+import { StoreReturnType } from '@/models/useStore';
+import { useModel } from 'umi';
 
 const homePrefixcls = utils.createPrefixCls('container', styles, 'ppt');
 
 const Home: React.FC = () => {
-  const { screening } = useModel('useGlobalModel' as any) || {};
+  const { store } = useModel(
+    'useStore' as any,
+    (model: StoreReturnType) => model,
+  );
 
   return (
     <div className={homePrefixcls()}>
-      <DisplayView display={screening}>
+      <DisplayView display={store?.screening}>
         <Scrren />
       </DisplayView>
-      <DisplayView display={!screening}>
+      <DisplayView display={!store?.screening}>
         <Editor />
       </DisplayView>
     </div>
