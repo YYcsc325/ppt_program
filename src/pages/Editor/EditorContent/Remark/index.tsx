@@ -2,10 +2,10 @@ import React from 'react';
 import { useModel } from 'umi';
 
 const Remark: React.FC = () => {
-  const { remarkHeight } = useModel('useCanvasRemarkModel' as any);
+  const canvasRemarkModel = useModel('useCanvasRemarkModel.index');
 
   return (
-    <div style={{ height: `${remarkHeight}px` }}>
+    <div style={{ height: `${canvasRemarkModel.canvasRemarkHeight}px` }}>
       <div>Remark</div>
     </div>
   );

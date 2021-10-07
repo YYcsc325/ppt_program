@@ -1,10 +1,8 @@
-import { SYS_FONTS_TYPE } from '@/config/font';
-
-import { CreatingElement } from '@/types/edit';
-import { ToolbarState } from '@/types/toolbar';
-
 import { theme } from '@/mocks/theme';
 import { slides } from '@/mocks/slides';
+import { CreatingElement } from '@/types/edit';
+import { ToolbarState } from '@/types/toolbar';
+import { SYS_FONTS_TYPE } from '@/config/font';
 import { defaultRichTextAttrs } from '@/utils/utils';
 
 export const initStoreState = {

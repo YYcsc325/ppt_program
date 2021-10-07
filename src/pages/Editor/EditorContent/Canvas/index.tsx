@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
+import { useModel } from 'umi';
 import { utils } from 'react-dtcomponents';
 import { throttle } from 'lodash';
 import { KEYS } from '@/config/hotKey';
-import { useModel } from 'umi';
 
 // import useScaleCanvas from '@/models/useScaleCanvas';
 // import useSlideHandler from '@/models/useSlideHandler';
@@ -12,7 +12,7 @@ import styles from './index.less';
 const canvasPrefixCls = utils.createPrefixCls('canvas', styles, 'ppt');
 
 const Canvas: React.FC = () => {
-  const { remarkHeight } = useModel('useCanvasRemarkModel' as any);
+  const canvasRemarkModel = useModel('useCanvasRemarkModel.index');
 
   const canvasRef = useRef(null);
 
@@ -58,7 +58,9 @@ const Canvas: React.FC = () => {
     <div
       ref={canvasRef}
       className={canvasPrefixCls()}
-      style={{ height: `calc(100% - ${remarkHeight + 40}px)` }}
+      style={{
+        height: `calc(100% - ${canvasRemarkModel.canvasRemarkHeight + 40}px)`,
+      }}
       // onWheel={handleMousewheelCanvas}
       // onMouseDown={handleClickBlankArea}
     >
