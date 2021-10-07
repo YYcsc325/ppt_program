@@ -1,13 +1,12 @@
 import React from 'react';
 import { useModel } from 'umi';
-import { StoreReturnType } from '@/models/useStore';
 
 const Screen: React.FC<any> = () => {
-  const store = useModel('useStore' as any, (model: StoreReturnType) => model);
+  const pagesModel = useModel('usePagesModel.index');
 
   return (
     <div>
-      <button onClick={() => store.setScreening(false)}>
+      <button onClick={() => pagesModel.setScreening(false)}>
         点击回到编辑页面
       </button>
     </div>
