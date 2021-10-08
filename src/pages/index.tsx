@@ -10,14 +10,16 @@ import styles from './index.less';
 const homePrefixcls = utils.createPrefixCls('container', styles, 'ppt');
 
 const Home: React.FC = () => {
-  const pagesModel = useModel('usePagesModel.index');
+  const pagesModel = useModel('usePagesModel.index', (model) => ({
+    screening: model?.storeData?.screening,
+  }));
 
   return (
     <div className={homePrefixcls()}>
-      <DisplayView display={pagesModel.storeData.screening}>
+      <DisplayView display={pagesModel?.screening}>
         <Scrren />
       </DisplayView>
-      <DisplayView display={!pagesModel.storeData.screening}>
+      <DisplayView display={!pagesModel?.screening}>
         <Editor />
       </DisplayView>
     </div>

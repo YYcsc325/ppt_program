@@ -1,29 +1,40 @@
-import React, { useRef } from 'react';
 import { useModel } from 'umi';
-import { utils } from 'react-dtcomponents';
 import { throttle } from 'lodash';
-import { KEYS } from '@/config/hotKey';
+import React, { useRef } from 'react';
+import { utils } from 'react-dtcomponents';
 
-// import useScaleCanvas from '@/models/useScaleCanvas';
-// import useSlideHandler from '@/models/useSlideHandler';
+import { KEYS } from '@/config/hotKey';
+import { removeAllRanges } from '@/utils/selection';
+import useScaleCanvas from '@/hooks/useScaleCanvas';
+// import useSlideHandler from '@/hooks/useSlideHandler';
 
 import styles from './index.less';
 
 const canvasPrefixCls = utils.createPrefixCls('canvas', styles, 'ppt');
 
 const Canvas: React.FC = () => {
+  const pagesModel = useModel(
+    'usePagesModel.index',
+    ({ storeData, setActiveElementIdList, setEditorAreaFocus }) => ({
+      setActiveElementIdList,
+      setEditorAreaFocus,
+      ctrlKeyState: storeData.ctrlKeyState,
+      editorAreaFocus: storeData.editorAreaFocus,
+    }),
+  );
+
   const canvasRemarkModel = useModel('useCanvasRemarkModel.index');
 
   const canvasRef = useRef(null);
 
   // 滚动鼠标
-  // const { scaleCanvas } = useScaleCanvas();
+  const { scaleCanvas } = useScaleCanvas();
   // const { updateSlideIndex } = useSlideHandler();
 
-  // const throttleScaleCanvas = throttle(scaleCanvas, 100, {
-  //   leading: true,
-  //   trailing: false,
-  // });
+  const throttleScaleCanvas = throttle(scaleCanvas, 100, {
+    leading: true,
+    trailing: false,
+  });
 
   // const throttleUpdateSlideIndex = throttle(updateSlideIndex, 300, {
   //   leading: true,
@@ -31,28 +42,27 @@ const Canvas: React.FC = () => {
   // });
 
   // // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
-  // const handleClickBlankArea = (e: React.MouseEvent) => {
-  //   store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, []);
-  //   if (!ctrlOrShiftKeyActive.value) updateMouseSelection(e);
-  //   if (!editorAreaFocus.value)
-  //     store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true);
-  //   removeAllRanges();
-  // };
+  const handleClickBlankArea = (e: React.MouseEvent) => {
+    pagesModel.setActiveElementIdList([]);
+    // if (!ctrlOrShiftKeyActive.value) updateMouseSelection(e);
+    if (!pagesModel.editorAreaFocus) pagesModel.setEditorAreaFocus(true);
+    // removeAllRanges();
+  };
 
-  // const handleMousewheelCanvas = (e: React.WheelEvent) => {
-  //   e.preventDefault();
+  const handleMousewheelCanvas = (e: React.WheelEvent) => {
+    e.preventDefault();
 
-  //   // 按住Ctrl键时：缩放画布
-  //   if (ctrlKeyState.value) {
-  //     if (e.deltaY > 0) throttleScaleCanvas('-');
-  //     else if (e.deltaY < 0) throttleScaleCanvas('+');
-  //   }
-  //   // 上下翻页
-  //   else {
-  //     if (e.deltaY > 0) throttleUpdateSlideIndex(KEYS.DOWN);
-  //     else if (e.deltaY < 0) throttleUpdateSlideIndex(KEYS.UP);
-  //   }
-  // };
+    // 按住Ctrl键时：缩放画布
+    if (pagesModel.ctrlKeyState) {
+      if (e.deltaY > 0) throttleScaleCanvas('-');
+      else if (e.deltaY < 0) throttleScaleCanvas('+');
+    }
+    // 上下翻页
+    // else {
+    //   if (e.deltaY > 0) throttleUpdateSlideIndex(KEYS.DOWN);
+    //   else if (e.deltaY < 0) throttleUpdateSlideIndex(KEYS.UP);
+    // }
+  };
 
   return (
     <div
@@ -61,8 +71,8 @@ const Canvas: React.FC = () => {
       style={{
         height: `calc(100% - ${canvasRemarkModel.canvasRemarkHeight + 40}px)`,
       }}
-      // onWheel={handleMousewheelCanvas}
-      // onMouseDown={handleClickBlankArea}
+      onWheel={handleMousewheelCanvas}
+      onMouseDown={handleClickBlankArea}
     >
       Canvas
     </div>
