@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dropdown, Menu, Drawer } from 'antd';
 import { utils } from 'react-dtcomponents';
-
+import { IconPosition, IconFont } from '@/components';
 import { HOTKEY_DOC } from '@/config/hotKey';
 
 import HotKey from '../conponents/HotKey';
@@ -73,7 +73,9 @@ const EditorHeader: React.FC = () => {
           }
         >
           <div className={editorHeaderPrefixCls('menu-item')}>
-            <span>文件</span>
+            <IconPosition type="file" position="left">
+              <span>文件</span>
+            </IconPosition>
           </div>
         </Dropdown>
         <Dropdown
@@ -102,7 +104,9 @@ const EditorHeader: React.FC = () => {
           }
         >
           <div className={editorHeaderPrefixCls('menu-item')}>
-            <span>编辑</span>
+            <IconPosition type="edit" position="left">
+              <span>编辑</span>
+            </IconPosition>
           </div>
         </Dropdown>
         <Dropdown
@@ -122,7 +126,9 @@ const EditorHeader: React.FC = () => {
           }
         >
           <div className={editorHeaderPrefixCls('menu-item')}>
-            <span>演示</span>
+            <IconPosition type="screen" position="left">
+              <span>演示</span>
+            </IconPosition>
           </div>
         </Dropdown>
         <Dropdown
@@ -139,7 +145,9 @@ const EditorHeader: React.FC = () => {
           }
         >
           <div className={editorHeaderPrefixCls('menu-item')}>
-            <span>帮助</span>
+            <IconPosition type="help" position="left">
+              <span>帮助</span>
+            </IconPosition>
           </div>
         </Dropdown>
       </div>
