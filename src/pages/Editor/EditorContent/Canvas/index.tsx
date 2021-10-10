@@ -4,15 +4,32 @@ import React, { useRef } from 'react';
 import { utils } from 'react-dtcomponents';
 
 import { KEYS } from '@/config/hotKey';
+import { PPTElement } from '@/types/slides';
 import { removeAllRanges } from '@/utils/selection';
+
 import useScaleCanvas from '@/hooks/useScaleCanvas';
 // import useSlideHandler from '@/hooks/useSlideHandler';
+import useGetter from '@/hooks/useGetter';
+
+import Operate from './Operate';
+import AlignmentLine from './AlignmentLine';
+import MouseSelection from './MouseSelection';
+import MultiSelectOperate from './MultiSelectOperate';
+import ViewportBackground from './ViewportBackground';
+import EditableElement from './EditableElement';
+import ElementCreateSelection from './ElementCreateSelection';
+
+import useMouseSelection from './hooks/useMouseSelection';
 
 import styles from './index.less';
 
 const canvasPrefixCls = utils.createPrefixCls('canvas', styles, 'ppt');
 
 const Canvas: React.FC = () => {
+  const canvasRef = useRef(null);
+  const viewportRef = useRef(null);
+  const elementList = useRef<PPTElement[]>([]);
+
   const pagesModel = useModel(
     'usePagesModel.index',
     ({ storeData, setActiveElementIdList, setEditorAreaFocus }) => ({
@@ -25,11 +42,16 @@ const Canvas: React.FC = () => {
 
   const canvasRemarkModel = useModel('useCanvasRemarkModel.index');
 
-  const canvasRef = useRef(null);
+  const gettterHook = useGetter();
+
+  // const { mouseSelectionState, updateMouseSelection } = useMouseSelection(
+  //   elementList,
+  //   viewportRef,
+  // );
 
   // 滚动鼠标
   const { scaleCanvas } = useScaleCanvas();
-  // const { updateSlideIndex } = useSlideHandler();
+  // const { updateSlideIndex } = useSlideHandler?.();
 
   const throttleScaleCanvas = throttle(scaleCanvas, 100, {
     leading: true,
@@ -44,9 +66,9 @@ const Canvas: React.FC = () => {
   // // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
   const handleClickBlankArea = (e: React.MouseEvent) => {
     pagesModel.setActiveElementIdList([]);
-    // if (!ctrlOrShiftKeyActive.value) updateMouseSelection(e);
+    // if (!gettterHook?.ctrlOrShiftKeyActive) updateMouseSelection(e);
     if (!pagesModel.editorAreaFocus) pagesModel.setEditorAreaFocus(true);
-    // removeAllRanges();
+    removeAllRanges();
   };
 
   const handleMousewheelCanvas = (e: React.WheelEvent) => {
@@ -58,10 +80,10 @@ const Canvas: React.FC = () => {
       else if (e.deltaY < 0) throttleScaleCanvas('+');
     }
     // 上下翻页
-    // else {
-    //   if (e.deltaY > 0) throttleUpdateSlideIndex(KEYS.DOWN);
-    //   else if (e.deltaY < 0) throttleUpdateSlideIndex(KEYS.UP);
-    // }
+    else {
+      // if (e.deltaY > 0) throttleUpdateSlideIndex(KEYS.DOWN);
+      // else if (e.deltaY < 0) throttleUpdateSlideIndex(KEYS.UP);
+    }
   };
 
   return (
@@ -74,7 +96,19 @@ const Canvas: React.FC = () => {
       onWheel={handleMousewheelCanvas}
       onMouseDown={handleClickBlankArea}
     >
-      Canvas
+      <ElementCreateSelection />
+      <div className={canvasPrefixCls('viewport-wrapper')}>
+        <div className={canvasPrefixCls('operates')}>
+          <AlignmentLine />
+          <MultiSelectOperate />
+          <Operate />
+          <ViewportBackground />
+        </div>
+        <div className={canvasPrefixCls('viewport')} ref={viewportRef}>
+          <MouseSelection />
+          <EditableElement />
+        </div>
+      </div>
     </div>
   );
 };
