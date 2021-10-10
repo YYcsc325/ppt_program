@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-export default function useCanvasRemarkModel(defaultHeight = 40) {
-  const [canvasRemarkHeight, setCanvasRemarkHeight] = useState(defaultHeight);
+export default function useCanvasRemarkModel() {
+  const [canvasRemarkHeight, setCanvasRemarkHeight] = useState(40);
 
   return {
     canvasRemarkHeight,
