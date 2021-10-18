@@ -41,4 +41,10 @@ export const StoreActions = {
 
   // screen
   SET_SCREENING: 'setScreening',
+
+  // action
+  ADD_SNAPSHOT: 'addSnapshot',
+  INIT_SNAPSHOT_DATABASE: 'initSnapshotDatabase',
+  UN_DO: 'unDo',
+  RE_DO: 'reDo',
 };

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Dropdown, Menu, Drawer } from 'antd';
 import { utils } from 'react-dtcomponents';
-import { IconPosition, IconFont } from '@/components';
-import { HOTKEY_DOC } from '@/config/hotKey';
+import { IconPosition } from '@/components';
+import { ACTION_HOTKEY_DOC } from '@/config/actionHotKey';
 
 import HotKey from '../conponents/HotKey';
 import styles from './index.less';
@@ -165,7 +165,7 @@ const EditorHeader: React.FC = () => {
         visible={visible}
       >
         <div className={editorHeaderPrefixCls('hotkey-doc')}>
-          {HOTKEY_DOC.map((item) => (
+          {ACTION_HOTKEY_DOC.map((item) => (
             <HotKey title={item.type} key={item.type}>
               {item.children.map((val) => (
                 <HotKey.Item

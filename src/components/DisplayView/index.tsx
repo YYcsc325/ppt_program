@@ -19,12 +19,8 @@ const DisplayView: React.FC<DisplayViewProps> = ({
   display = false,
 }) => {
   return (
-    <div
-      className={classNames(displayViewPrefixcls(), {
-        [displayViewPrefixcls('hide')]: !display,
-      })}
-    >
-      {children}
+    <div className={classNames(displayViewPrefixcls())}>
+      {display && children}
     </div>
   );
 };
