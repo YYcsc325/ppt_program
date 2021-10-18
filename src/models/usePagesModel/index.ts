@@ -97,7 +97,7 @@ export default function usePagesModel() {
         payload,
       });
     },
-    setSlides: (payload: Slide) => {
+    setSlides: (payload: Slide[]) => {
       dispatchStore({
         type: StoreActions.SET_SLIDES,
         payload,

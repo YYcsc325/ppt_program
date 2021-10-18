@@ -1,4 +1,4 @@
-export const KEYS = {
+export const ACTION_KEYS = {
   C: 'C',
   X: 'X',
   Z: 'Z',
@@ -23,7 +23,7 @@ export const KEYS = {
   BACKSPACE: 'BACKSPACE',
 };
 
-export const HOTKEY_DOC = [
+export const ACTION_HOTKEY_DOC = [
   {
     type: '通用',
     children: [

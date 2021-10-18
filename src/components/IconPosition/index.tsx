@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from 'react';
+import React, { Fragment } from 'react';
 import IconFont, { IconFontProps } from '@/components/IconFont';
 
 export interface IconPositionProps extends IconFontProps {
