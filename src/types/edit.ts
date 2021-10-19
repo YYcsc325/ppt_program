@@ -3,12 +3,12 @@ import { LinePoolItem } from '@/config/lines';
 
 export type ElementOrderCommand = 'up' | 'down' | 'top' | 'bottom';
 
-export const enum ElementOrderCommands {
-  UP = 'up',
-  DOWN = 'down',
-  TOP = 'top',
-  BOTTOM = 'bottom',
-}
+export const ElementOrderCommands = {
+  UP: 'up',
+  DOWN: 'down',
+  TOP: 'top',
+  BOTTOM: 'bottom',
+};
 
 export type ElementAlignCommand =
   | 'top'
@@ -19,24 +19,24 @@ export type ElementAlignCommand =
   | 'horizontal'
   | 'center';
 
-export const enum ElementAlignCommands {
-  TOP = 'top',
-  BOTTOM = 'bottom',
-  LEFT = 'left',
-  RIGHT = 'right',
-  VERTICAL = 'vertical',
-  HORIZONTAL = 'horizontal',
-  CENTER = 'center',
-}
+export const ElementAlignCommands = {
+  TOP: 'top',
+  BOTTOM: 'bottom',
+  LEFT: 'left',
+  RIGHT: 'right',
+  VERTICAL: 'vertical',
+  HORIZONTAL: 'horizontal',
+  CENTER: 'center',
+};
 
 export type OperateBorderLine = 'top' | 'bottom' | 'left' | 'right';
 
-export const enum OperateBorderLines {
-  T = 'top',
-  B = 'bottom',
-  L = 'left',
-  R = 'right',
-}
+export const OperateBorderLines = {
+  T: 'top',
+  B: 'bottom',
+  L: 'left',
+  R: 'right',
+};
 
 export type OperateResizeHandler =
   | ''
@@ -49,24 +49,24 @@ export type OperateResizeHandler =
   | 'bottom'
   | 'right-bottom';
 
-export const enum OperateResizeHandlers {
-  LEFT_TOP = 'left-top',
-  TOP = 'top',
-  RIGHT_TOP = 'right-top',
-  LEFT = 'left',
-  RIGHT = 'right',
-  LEFT_BOTTOM = 'left-bottom',
-  BOTTOM = 'bottom',
-  RIGHT_BOTTOM = 'right-bottom',
-}
+export const OperateResizeHandlers = {
+  LEFT_TOP: 'left-top',
+  TOP: 'top',
+  RIGHT_TOP: 'right-top',
+  LEFT: 'left',
+  RIGHT: 'right',
+  LEFT_BOTTOM: 'left-bottom',
+  BOTTOM: 'bottom',
+  RIGHT_BOTTOM: 'right-bottom',
+};
 
 export type OperateLineHandler = 'start' | 'end' | 'mid';
 
-export const enum OperateLineHandlers {
-  START = 'start',
-  END = 'end',
-  MID = 'mid',
-}
+export const OperateLineHandlers = {
+  START: 'start',
+  END: 'end',
+  MID: 'mid',
+};
 
 export interface AlignmentLineAxis {
   x: number;

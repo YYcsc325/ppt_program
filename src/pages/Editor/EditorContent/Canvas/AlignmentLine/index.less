@@ -1,0 +1,22 @@
+@import '../../../../../assets/variable.less';
+
+.ppt-alignment-line {
+  position: absolute;
+  z-index: 100;
+
+  &-line {
+    width: 0;
+    height: 0;
+    border: 0 dashed @ly-theme-color;
+  }
+
+  &-vertical {
+    transform: translateY(-0.5px);
+    border-left-width: 1px;
+  }
+
+  &-horizontal {
+    transform: translateX(-0.5px);
+    border-top-width: 1px;
+  }
+}

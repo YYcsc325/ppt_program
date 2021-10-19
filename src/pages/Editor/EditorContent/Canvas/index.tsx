@@ -1,15 +1,16 @@
+import React from 'react';
 import { useModel } from 'umi';
 import { throttle } from 'lodash';
-import React, { useRef } from 'react';
 import { utils } from 'react-dtcomponents';
+import { PPTElement } from '@/types/slides';
+import { AlignmentLineProps } from '@/types/edit';
 import DisplayView from '@/components/DisplayView';
 import { ACTION_KEYS } from '@/config/actionHotKey';
-import { PPTElement } from '@/types/slides';
 import { removeAllRanges } from '@/utils/selection';
 
+import useGetter from '@/hooks/useGetter';
 import useScaleCanvas from '@/hooks/useScaleCanvas';
 import useSlideHandler from '@/hooks/useSlideHandler';
-import useGetter from '@/hooks/useGetter';
 
 import Operate from './Operate';
 import AlignmentLine from './AlignmentLine';
@@ -19,6 +20,8 @@ import MultiSelectOperate from './MultiSelectOperate';
 import ViewportBackground from './ViewportBackground';
 import ElementCreateSelection from './ElementCreateSelection';
 
+import useScaleElement from './hooks/useScaleElement';
+import useViewportSize from './hooks/useViewportSize';
 import useMouseSelection from './hooks/useMouseSelection';
 import useInsertFromCreateSelection from './hooks/useInsertFromCreateSelection';
 
@@ -27,33 +30,38 @@ import styles from './index.less';
 const canvasPrefixCls = utils.createPrefixCls('canvas', styles, 'ppt');
 
 const Canvas: React.FC = () => {
-  const canvasRef = useRef(null);
-  const viewportRef = useRef(null);
-  const elementList = useRef<PPTElement[]>([]);
-
-  const pagesModel = useModel(
-    'usePagesModel.index',
-    ({ storeData, setActiveElementIdList, setEditorAreaFocus }) => ({
-      setActiveElementIdList,
-      setEditorAreaFocus,
-      ctrlKeyState: storeData.ctrlKeyState,
-      editorAreaFocus: storeData.editorAreaFocus,
-      creatingElement: storeData.creatingElement,
-    }),
-  );
-
-  const canvasRemarkModel = useModel('useCanvasRemarkModel.index');
+  const store = useModel('usePagesModel.index');
+  const canvasRemarkStore = useModel('useCanvasRemarkModel.index');
 
   const gettterHook = useGetter();
+  const canvasRef = React.useRef(null);
+  const viewportRef = React.useRef(null);
+  const elementList = React.useRef<PPTElement[]>([]);
+  const alignmentLines = React.useRef<AlignmentLineProps[]>([]);
+
+  const canvasScale = store.storeData.canvasScale;
+  const ctrlKeyState = store.storeData.ctrlKeyState;
+  const handleElementId = store.storeData.handleElementId;
+  const editorAreaFocus = store.storeData.editorAreaFocus;
+  const ctrlOrShiftKeyActive = gettterHook.ctrlOrShiftKeyActive;
+  const activeElementIdList = store.storeData.activeElementIdList;
+  const activeGroupElementId = store.storeData.activeGroupElementId;
+
+  const { viewportStyles } = useViewportSize(canvasRef);
 
   const { mouseSelectionState, updateMouseSelection } = useMouseSelection(
     elementList,
     viewportRef,
   );
 
+  const { scaleElement, scaleMultiElement } = useScaleElement(
+    elementList,
+    alignmentLines,
+  );
+
   // 滚动鼠标
   const { scaleCanvas } = useScaleCanvas();
-  const { updateSlideIndex } = useSlideHandler?.();
+  const { updateSlideIndex } = useSlideHandler();
 
   const throttleScaleCanvas = throttle(scaleCanvas, 100, {
     leading: true,
@@ -67,9 +75,9 @@ const Canvas: React.FC = () => {
 
   // // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
   const handleClickBlankArea = (e: React.MouseEvent) => {
-    pagesModel.setActiveElementIdList([]);
+    store.setActiveElementIdList([]);
     if (!gettterHook?.ctrlOrShiftKeyActive) updateMouseSelection(e);
-    if (!pagesModel.editorAreaFocus) pagesModel.setEditorAreaFocus(true);
+    if (!store.storeData.editorAreaFocus) store.setEditorAreaFocus(true);
     removeAllRanges();
   };
 
@@ -77,7 +85,7 @@ const Canvas: React.FC = () => {
     e.preventDefault();
 
     // 按住Ctrl键时：缩放画布
-    if (pagesModel.ctrlKeyState) {
+    if (store.storeData.ctrlKeyState) {
       if (e.deltaY > 0) throttleScaleCanvas('-');
       else if (e.deltaY < 0) throttleScaleCanvas('+');
     }
@@ -89,27 +97,52 @@ const Canvas: React.FC = () => {
   };
 
   // 在鼠标绘制的范围插入元素
-  const creatingElement = pagesModel.creatingElement;
+  const creatingElement = store.storeData.creatingElement;
   const { insertElementFromCreateSelection } =
     useInsertFromCreateSelection(viewportRef);
-  console.log(viewportRef, 'viewportRef');
+
+  const ecsVisible = Boolean(creatingElement);
+  const msoVisible = Boolean(activeElementIdList.length > 1);
+
   return (
     <div
       ref={canvasRef}
       className={canvasPrefixCls()}
       style={{
-        height: `calc(100% - ${canvasRemarkModel.canvasRemarkHeight + 40}px)`,
+        height: `calc(100% - ${canvasRemarkStore.canvasRemarkHeight + 40}px)`,
       }}
       onWheel={handleMousewheelCanvas}
       onMouseDown={handleClickBlankArea}
     >
-      <DisplayView display={Boolean(pagesModel.creatingElement)}>
-        <ElementCreateSelection />
+      <DisplayView display={ecsVisible}>
+        <ElementCreateSelection onChange={insertElementFromCreateSelection} />
       </DisplayView>
-      <div className={canvasPrefixCls('viewport-wrapper')}>
+      <div
+        className={canvasPrefixCls('viewport-wrapper')}
+        style={{
+          width: viewportStyles.width * canvasScale + 'px',
+          height: viewportStyles.height * canvasScale + 'px',
+          left: viewportStyles.left + 'px',
+          top: viewportStyles.top + 'px',
+        }}
+      >
         <div className={canvasPrefixCls('operates')}>
-          <AlignmentLine />
-          <MultiSelectOperate />
+          {alignmentLines.current.map((line, index) => {
+            return (
+              <AlignmentLine
+                key={index}
+                type={line.type}
+                axis={line.axis}
+                length={line.length}
+              />
+            );
+          })}
+          <DisplayView display={msoVisible}>
+            <MultiSelectOperate
+              elementList={elementList}
+              scaleMultiElement={scaleMultiElement}
+            />
+          </DisplayView>
           <Operate />
           <ViewportBackground />
         </div>
