@@ -8,6 +8,7 @@ import {
 
 export default (viewportRef: any) => {
   const store = useModel('usePagesModel.index');
+
   const canvasScale = store.storeData.canvasScale;
   const creatingElement = store.storeData.creatingElement;
 

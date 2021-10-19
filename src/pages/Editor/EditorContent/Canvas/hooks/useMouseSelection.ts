@@ -23,10 +23,10 @@ export default (elementList: any, viewportRef: any) => {
 
   // 更新鼠标框选范围
   const updateMouseSelection = (e: React.MouseEvent) => {
-    if (!viewportRef.value) return;
+    if (!viewportRef.current) return;
 
     let isMouseDown = true;
-    const viewportRect = viewportRef.value.getBoundingClientRect();
+    const viewportRect = viewportRef.current.getBoundingClientRect();
 
     const minSelectionRange = 5;
 
@@ -86,8 +86,8 @@ export default (elementList: any, viewportRef: any) => {
 
       // 计算画布中的元素是否处在鼠标选择范围中，处在范围中的元素设置为被选中状态
       let inRangeElementList: PPTElement[] = [];
-      for (let i = 0; i < elementList.value.length; i++) {
-        const element = elementList.value[i];
+      for (let i = 0; i < elementList.length; i++) {
+        const element = elementList[i];
         const mouseSelectionLeft = mouseSelectionState.left;
         const mouseSelectionTop = mouseSelectionState.top;
         const mouseSelectionWidth = mouseSelectionState.width;
@@ -139,7 +139,7 @@ export default (elementList: any, viewportRef: any) => {
           const inRangeElementIdList = inRangeElementList.map(
             (inRangeElement) => inRangeElement.id,
           );
-          const groupElementList = elementList.value.filter(
+          const groupElementList = elementList.filter(
             (element: any) => element.groupId === inRangeElement.groupId,
           );
           return groupElementList.every((groupElement: any) =>
