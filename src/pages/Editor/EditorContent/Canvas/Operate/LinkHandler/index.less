@@ -1,0 +1,33 @@
+@import '../../../../../../assets/variable.less';
+@import '../../../../../../assets/mixin.less';
+
+.ppt-link-handler {
+  height: 30px;
+  position: absolute;
+  left: 0;
+  font-size: 12px;
+  padding: 0 10px;
+  background-color: #fff;
+  box-shadow: @ly-box-shadow;
+  display: flex;
+  align-items: center;
+  color: @ly-theme-color;
+
+  &-link {
+    max-width: 300px;
+    margin-right: 20px;
+    word-break: keep-all;
+    white-space: nowrap;
+    .ellipsis-oneline();
+  }
+
+  &-btns {
+    display: flex;
+    align-items: center;
+  }
+
+  &-btn {
+    word-break: keep-all;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,26 @@
+@import '../../../../../assets/variable.less';
+
+.ppt-operate {
+  position: absolute;
+  z-index: 100;
+  user-select: none;
+
+  &-multi-select {
+    opacity: 0;
+  }
+
+  &-animation-index {
+    position: absolute;
+    top: 0;
+    left: -24px;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    color: @ly-theme-color;
+    border: 1px solid @ly-theme-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

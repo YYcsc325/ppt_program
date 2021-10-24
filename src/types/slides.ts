@@ -4,16 +4,16 @@ import {
   IPieChartOptions,
 } from 'chartist';
 
-export const enum ElementTypes {
-  TEXT = 'text',
-  IMAGE = 'image',
-  SHAPE = 'shape',
-  LINE = 'line',
-  CHART = 'chart',
-  TABLE = 'table',
-  LATEX = 'latex',
-  VIDEO = 'video',
-}
+export const ElementTypes = {
+  TEXT: 'text',
+  IMAGE: 'image',
+  SHAPE: 'shape',
+  LINE: 'line',
+  CHART: 'chart',
+  TABLE: 'table',
+  LATEX: 'latex',
+  VIDEO: 'video',
+};
 
 /**
  * 元素阴影

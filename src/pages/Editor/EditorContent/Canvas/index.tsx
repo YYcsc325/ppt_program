@@ -16,9 +16,9 @@ import Operate from './Operate';
 import AlignmentLine from './AlignmentLine';
 import MouseSelection from './MouseSelection';
 import EditableElement from './EditableElement';
-import MultiSelectOperate from './MultiSelectOperate';
 import ViewportBackground from './ViewportBackground';
 import ElementCreateSelection from './ElementCreateSelection';
+import MultiSelectOperate from './Operate/MultiSelectOperate';
 
 import useScaleElement from './hooks/useScaleElement';
 import useViewportSize from './hooks/useViewportSize';
@@ -50,7 +50,7 @@ const Canvas: React.FC = () => {
   const { viewportStyles } = useViewportSize(canvasRef);
 
   const { mouseSelectionState, updateMouseSelection } = useMouseSelection(
-    elementList,
+    elementList.current,
     viewportRef,
   );
 
@@ -139,11 +139,11 @@ const Canvas: React.FC = () => {
           })}
           <DisplayView display={msoVisible}>
             <MultiSelectOperate
-              elementList={elementList}
-              scaleMultiElement={scaleMultiElement}
+              elementList={elementList.current}
+              scaleMultiElement={scaleMultiElement as any}
             />
           </DisplayView>
-          <Operate />
+          {/* <Operate /> */}
           <ViewportBackground />
         </div>
         <div className={canvasPrefixCls('viewport')} ref={viewportRef}>
