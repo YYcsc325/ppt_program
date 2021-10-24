@@ -5,7 +5,7 @@ import { utils } from 'react-dtcomponents';
 import useGetter from '@/hooks/useGetter';
 import { DisplayView } from '@/components';
 import { OperateLineHandler, OperateResizeHandler } from '@/types/edit';
-import { ElementTypes, PPTElement, Slide } from '@/types/slides';
+import { ElementTypes, PPTElement, PPTLineElement } from '@/types/slides';
 
 import LinkHandler from './LinkHandler';
 import ImageElementOperate from './ImageElementOperate';
@@ -41,11 +41,11 @@ export interface OperateProps {
   ) => void;
   dragLineElement: (
     e: React.MouseEvent,
-    element: PPTElement,
+    element: PPTLineElement,
     command: OperateLineHandler,
   ) => void;
   openLinkDialog: () => void;
-  elementInfo: PPTElement & { height: number; rotate: number };
+  elementInfo: PPTElement & { height?: number; rotate?: number };
 }
 
 const Operate: React.FC<OperateProps> = (props) => {
@@ -81,7 +81,7 @@ const Operate: React.FC<OperateProps> = (props) => {
         left: elementInfo.left * canvasScale + 'px',
         transform: `rotate(${elementInfo.rotate}deg)`,
         transformOrigin: `${(elementInfo.width * canvasScale) / 2}px ${
-          (elementInfo.height * canvasScale) / 2
+          (elementInfo?.height || 0 * canvasScale) / 2
         }px`,
       }}
       className={classNames(operatePrefixCls(), {
