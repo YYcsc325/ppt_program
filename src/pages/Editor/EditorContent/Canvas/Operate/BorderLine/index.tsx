@@ -7,15 +7,22 @@ import styles from './index.less';
 const borderLinePrefixCls = utils.createPrefixCls('border-line', styles, 'ppt');
 
 export interface BorderLineProps {
+  isWide?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
   type: 'top' | 'bottom' | 'left' | 'right' | string;
-  isWide: boolean;
-  style: React.CSSProperties;
 }
 
-const BorderLine: React.FC<BorderLineProps> = ({ type, isWide = false }) => {
+const BorderLine: React.FC<BorderLineProps> = ({
+  type,
+  style,
+  className,
+  isWide = false,
+}) => {
   return (
     <div
-      className={classNames(borderLinePrefixCls(), {
+      style={style}
+      className={classNames(borderLinePrefixCls(), className, {
         [borderLinePrefixCls('top')]: type === 'top',
         [borderLinePrefixCls('top')]: type === 'bottom',
         [borderLinePrefixCls('top')]: type === 'left',

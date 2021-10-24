@@ -179,7 +179,15 @@ const Canvas: React.FC = () => {
           <ViewportBackground />
         </div>
         <div className={canvasPrefixCls('viewport')} ref={viewportRef}>
-          <MouseSelection />
+          <DisplayView display={mouseSelectionState.isShow}>
+            <MouseSelection
+              top={mouseSelectionState.top}
+              left={mouseSelectionState.left}
+              width={mouseSelectionState.width}
+              height={mouseSelectionState.height}
+              quadrant={mouseSelectionState.quadrant}
+            />
+          </DisplayView>
           <EditableElement />
         </div>
       </div>

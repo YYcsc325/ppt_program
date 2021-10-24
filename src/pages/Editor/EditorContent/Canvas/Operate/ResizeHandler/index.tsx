@@ -12,12 +12,15 @@ const resizeHandlerPrefixCls = utils.createPrefixCls(
 
 export interface ResizeHandlerProps {
   rotate?: number;
+  className?: string;
   type: 'top' | 'bottom' | 'left' | 'right' | string;
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
   onMouseDown: (e: React.MouseEvent) => void;
 }
 
 const ResizeHandler: React.FC<ResizeHandlerProps> = (props) => {
+  const { style, className, type, onMouseDown } = props;
+
   const rotateClassName = React.useMemo(() => {
     const prefix = 'rotate-';
     const rotate = props.rotate as number;
@@ -34,12 +37,14 @@ const ResizeHandler: React.FC<ResizeHandlerProps> = (props) => {
 
   return (
     <div
+      style={style}
       className={classNames(
         resizeHandlerPrefixCls(),
         rotateClassName,
-        props.type,
+        className,
+        type,
       )}
-      onMouseDown={props.onMouseDown}
+      onMouseDown={onMouseDown}
     ></div>
   );
 };
