@@ -16,13 +16,16 @@ import Operate from './Operate';
 import AlignmentLine from './AlignmentLine';
 import MouseSelection from './MouseSelection';
 import EditableElement from './EditableElement';
-import MultiSelectOperate from './MultiSelectOperate';
 import ViewportBackground from './ViewportBackground';
 import ElementCreateSelection from './ElementCreateSelection';
+import MultiSelectOperate from './Operate/MultiSelectOperate';
 
 import useScaleElement from './hooks/useScaleElement';
 import useViewportSize from './hooks/useViewportSize';
 import useMouseSelection from './hooks/useMouseSelection';
+import useRotateElement from './hooks/useRotateElement';
+import useDragElement from './hooks/useDragElement';
+import useDragLineElement from './hooks/useDragLineElement';
 import useInsertFromCreateSelection from './hooks/useInsertFromCreateSelection';
 
 import styles from './index.less';
@@ -39,6 +42,8 @@ const Canvas: React.FC = () => {
   const elementList = React.useRef<PPTElement[]>([]);
   const alignmentLines = React.useRef<AlignmentLineProps[]>([]);
 
+  const [linkDialogVisible, setLinkDialogVisible] = React.useState(false);
+
   const canvasScale = store.storeData.canvasScale;
   const ctrlKeyState = store.storeData.ctrlKeyState;
   const handleElementId = store.storeData.handleElementId;
@@ -50,7 +55,7 @@ const Canvas: React.FC = () => {
   const { viewportStyles } = useViewportSize(canvasRef);
 
   const { mouseSelectionState, updateMouseSelection } = useMouseSelection(
-    elementList,
+    elementList.current,
     viewportRef,
   );
 
@@ -58,6 +63,16 @@ const Canvas: React.FC = () => {
     elementList,
     alignmentLines,
   );
+
+  const { dragElement } = useDragElement(elementList, alignmentLines);
+  const { dragLineElement } = useDragLineElement(elementList);
+  // const { selectElement } = useSelectElement(elementList, dragElement)
+  const { rotateElement } = useRotateElement(elementList, viewportRef);
+
+  // const { selectAllElement } = useSelectAllElement()
+  // const { deleteAllElements } = useDeleteElement()
+  // const { pasteElement } = useCopyAndPasteElement()
+  // const { enterScreening } = useScreening()
 
   // 滚动鼠标
   const { scaleCanvas } = useScaleCanvas();
@@ -104,6 +119,10 @@ const Canvas: React.FC = () => {
   const ecsVisible = Boolean(creatingElement);
   const msoVisible = Boolean(activeElementIdList.length > 1);
 
+  const openLinkDialog = () => {
+    setLinkDialogVisible(true);
+  };
+
   return (
     <div
       ref={canvasRef}
@@ -139,11 +158,24 @@ const Canvas: React.FC = () => {
           })}
           <DisplayView display={msoVisible}>
             <MultiSelectOperate
-              elementList={elementList}
-              scaleMultiElement={scaleMultiElement}
+              elementList={elementList.current}
+              scaleMultiElement={scaleMultiElement as any}
             />
           </DisplayView>
-          <Operate />
+          {elementList.current.map((element) => (
+            <Operate
+              key={element.id}
+              elementInfo={element}
+              scaleElement={scaleElement}
+              rotateElement={rotateElement}
+              openLinkDialog={openLinkDialog}
+              dragLineElement={dragLineElement}
+              isActive={handleElementId === element.id}
+              isSelected={activeElementIdList.includes(element.id)}
+              isMultiSelect={activeElementIdList.length > 1}
+              isActiveGroupElement={activeGroupElementId === element.id}
+            />
+          ))}
           <ViewportBackground />
         </div>
         <div className={canvasPrefixCls('viewport')} ref={viewportRef}>

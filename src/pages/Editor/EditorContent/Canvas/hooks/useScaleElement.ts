@@ -131,7 +131,7 @@ export default (
 
   // 缩放元素
   const scaleElement = (
-    e: MouseEvent,
+    e: React.MouseEvent,
     element: Exclude<PPTElement, PPTLineElement>,
     command: OperateResizeHandlersTypes,
   ) => {

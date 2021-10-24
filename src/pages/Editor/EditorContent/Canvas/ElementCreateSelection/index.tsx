@@ -27,10 +27,10 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
   const ctrlOrShiftKeyActive = getter.ctrlOrShiftKeyActive();
   const creatingElement = store.storeData.creatingElement;
 
-  const start = React.useRef<[number, number]>();
-  const end = React.useRef<[number, number]>();
   const selectionRef = React.useRef<any>(null);
 
+  const [start, setStart] = React.useState<[number, number]>();
+  const [end, setEnd] = React.useState<[number, number]>();
   const [offset, setOffset] = React.useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -52,7 +52,7 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
 
     const startPageX = e.pageX;
     const startPageY = e.pageY;
-    start.current = [startPageX, startPageY];
+    setStart([startPageX, startPageY]);
 
     document.onmousemove = (e) => {
       if (!creatingElement || !isMouseDown) return;
@@ -85,8 +85,7 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
           else currentPageX = startPageX;
         }
       }
-
-      end.current = [currentPageX, currentPageY];
+      setEnd([currentPageX, currentPageY]);
     };
 
     document.onmouseup = (e) => {
@@ -105,8 +104,8 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
           Math.abs(endPageY - startPageY) >= minSize)
       ) {
         onChange({
-          start: start.current,
-          end: end.current,
+          start,
+          end,
         } as CreateElementSelectionData);
       } else if (
         creatingElement?.type !== 'line' &&
@@ -114,8 +113,8 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
         Math.abs(endPageY - startPageY) >= minSize
       ) {
         onChange({
-          start: start.current,
-          end: end.current,
+          start,
+          end,
         } as CreateElementSelectionData);
       } else {
         const defaultSize = 200;
@@ -135,11 +134,11 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
 
   /** 绘制线条的路径相关数据（仅当绘制元素类型为线条时使用）*/
   const lineData = React.useMemo(() => {
-    if (!start.current || !end.current) return null;
+    if (!start || !end) return null;
     if (!creatingElement || creatingElement.type !== 'line') return null;
 
-    const [_startX, _startY] = start.current;
-    const [_endX, _endY] = end.current;
+    const [_startX, _startY] = start;
+    const [_endX, _endY] = end;
 
     const minX = Math.min(_startX, _endX);
     const maxX = Math.max(_startX, _endX);
@@ -169,10 +168,10 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
 
   /** 根据生成范围的起始位置和终点位置，计算元素创建时的位置和大小 */
   const position = React.useMemo(() => {
-    if (!start.current || !end.current) return {};
+    if (!start || !end) return {};
 
-    const [startX, startY] = start.current;
-    const [endX, endY] = end.current;
+    const [startX, startY] = start;
+    const [endX, endY] = end;
 
     const minX = Math.min(startX, endX);
     const maxX = Math.max(startX, endX);
@@ -188,9 +187,9 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
       width: width + 'px',
       height: height + 'px',
     };
-  }, []);
+  }, [start, end]);
 
-  const selectionVisible = Boolean(start.current && end.current);
+  const selectionVisible = Boolean(start && end);
   const svgWrapperVisible = Boolean(
     creatingElement?.type === 'line' && lineData,
   );

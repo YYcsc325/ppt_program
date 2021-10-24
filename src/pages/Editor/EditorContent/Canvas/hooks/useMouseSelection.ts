@@ -3,7 +3,10 @@ import { useModel } from 'umi';
 import { PPTElement } from '@/types/slides';
 import { getElementRange } from '@/utils/element';
 
-export default (elementList: any, viewportRef: any) => {
+export default (
+  elementList: PPTElement[],
+  viewportRef: React.RefObject<HTMLDivElement>,
+) => {
   const { canvasScale, setActiveElementIdList } = useModel(
     'usePagesModel.index',
     ({ storeData, setActiveElementIdList }) => ({

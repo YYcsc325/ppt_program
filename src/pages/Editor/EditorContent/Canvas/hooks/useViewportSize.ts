@@ -13,9 +13,9 @@ export default (canvasRef: any) => {
 
   // 计算画布可视区域的位置
   const setViewportPosition = () => {
-    if (!canvasRef.value) return;
-    const canvasWidth = canvasRef.value.clientWidth;
-    const canvasHeight = canvasRef.value.clientHeight;
+    if (!canvasRef.current) return;
+    const canvasWidth = canvasRef.current.clientWidth;
+    const canvasHeight = canvasRef.current.clientHeight;
 
     if (canvasHeight / canvasWidth > viewportRatio) {
       const viewportActualWidth = canvasWidth * (canvasPercentage / 100);
