@@ -22,7 +22,7 @@ export default (
 
   const { addHistorySnapshot } = useHistorySnapshot();
 
-  const dragElement = (e: MouseEvent, element: PPTElement) => {
+  const dragElement = (e: React.MouseEvent, element: PPTElement) => {
     if (!activeElementIdList.includes(element.id)) return;
     let isMouseDown = true;
 

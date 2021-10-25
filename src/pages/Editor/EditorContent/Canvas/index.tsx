@@ -26,6 +26,7 @@ import useMouseSelection from './hooks/useMouseSelection';
 import useRotateElement from './hooks/useRotateElement';
 import useDragElement from './hooks/useDragElement';
 import useDragLineElement from './hooks/useDragLineElement';
+import useSelectElement from './hooks/useSelectElement';
 import useInsertFromCreateSelection from './hooks/useInsertFromCreateSelection';
 
 import styles from './index.less';
@@ -66,7 +67,7 @@ const Canvas: React.FC = () => {
 
   const { dragElement } = useDragElement(elementList, alignmentLines);
   const { dragLineElement } = useDragLineElement(elementList);
-  // const { selectElement } = useSelectElement(elementList, dragElement)
+  const { selectElement } = useSelectElement(elementList, dragElement);
   const { rotateElement } = useRotateElement(elementList, viewportRef);
 
   // const { selectAllElement } = useSelectAllElement()
@@ -188,7 +189,16 @@ const Canvas: React.FC = () => {
               quadrant={mouseSelectionState.quadrant}
             />
           </DisplayView>
-          <EditableElement />
+          {elementList.current.map((element, index) => (
+            <EditableElement
+              key={element.id}
+              elementInfo={element}
+              elementIndex={index + 1}
+              isMultiSelect={activeElementIdList.length > 1}
+              selectElement={selectElement}
+              openLinkDialog={openLinkDialog}
+            />
+          ))}
         </div>
       </div>
     </div>
