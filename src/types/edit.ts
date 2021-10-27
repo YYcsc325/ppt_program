@@ -29,6 +29,8 @@ export const ElementAlignCommands = {
   CENTER: 'center',
 };
 
+export type ElementAlignCommandsType = keyof typeof ElementAlignCommands;
+
 export type OperateBorderLine = 'top' | 'bottom' | 'left' | 'right';
 
 export const OperateBorderLines = {

@@ -23,7 +23,7 @@ const EditorContent: React.FC = () => {
         <CanvasTool />
         <Canvas />
         <Remark />
-        <Toolbar />
+        {/* <Toolbar /> */}
       </div>
     </div>
   );

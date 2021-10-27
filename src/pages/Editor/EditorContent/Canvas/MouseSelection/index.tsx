@@ -18,18 +18,13 @@ export interface MouseSelectionProps {
   height: number;
 }
 
-const MouseSelection: React.FC<MouseSelectionProps> = ({
-  quadrant,
-  top,
-  left,
-  width,
-  height,
-}) => {
+const MouseSelection: React.FC<MouseSelectionProps> = (props) => {
+  const { quadrant, top, left, width, height } = props;
   return (
     <div
       className={classNames(
         mouseSelectionPrefixCls(),
-        mouseSelectionPrefixCls(`uadrant-${quadrant}`),
+        mouseSelectionPrefixCls(`quadrant-${quadrant}`),
       )}
       style={{
         top: `${top}px`,

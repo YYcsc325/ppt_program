@@ -1,34 +1,35 @@
-import { useState } from 'react';
+import React from 'react';
 import { useModel } from 'umi';
 import { PPTElement } from '@/types/slides';
 import { getElementRange } from '@/utils/element';
+
+const initMouseSelectionState = {
+  isShow: false,
+  top: 0,
+  left: 0,
+  width: 0,
+  height: 0,
+  quadrant: 1,
+};
+
+function reducers(state: typeof initMouseSelectionState, data: any) {
+  return { ...state, ...data };
+}
 
 export default (
   elementList: PPTElement[],
   viewportRef: React.RefObject<HTMLDivElement>,
 ) => {
-  const { canvasScale, setActiveElementIdList } = useModel(
-    'usePagesModel.index',
-    ({ storeData, setActiveElementIdList }) => ({
-      setActiveElementIdList,
-      canvasScale: storeData.canvasScale,
-    }),
-  );
+  const store = useModel('usePagesModel.index');
 
-  const [mouseSelectionState, setMouseSelectionState] = useState({
-    isShow: false,
-    top: 0,
-    left: 0,
-    width: 0,
-    height: 0,
-    quadrant: 1,
-  });
+  const [state, dispatchState] = React.useReducer(
+    reducers,
+    initMouseSelectionState,
+  );
 
   // 更新鼠标框选范围
   const updateMouseSelection = (e: React.MouseEvent) => {
     if (!viewportRef.current) return;
-
-    let isMouseDown = true;
     const viewportRect = viewportRef.current.getBoundingClientRect();
 
     const minSelectionRange = 5;
@@ -36,12 +37,11 @@ export default (
     const startPageX = e.pageX;
     const startPageY = e.pageY;
 
-    const left = (startPageX - viewportRect.x) / canvasScale;
-    const top = (startPageY - viewportRect.y) / canvasScale;
+    const left = (startPageX - viewportRect.x) / store.storeData.canvasScale;
+    const top = (startPageY - viewportRect.y) / store.storeData.canvasScale;
 
     // 确定框选的起始位置和其他默认值初始化
-    setMouseSelectionState({
-      ...mouseSelectionState,
+    dispatchState({
       isShow: false,
       quadrant: 4,
       top,
@@ -50,14 +50,14 @@ export default (
       height: 0,
     });
 
-    document.onmousemove = (e) => {
-      if (!isMouseDown) return;
+    document.onmousemove = (ev) => {
+      const currentPageX = ev.pageX;
+      const currentPageY = ev.pageY;
 
-      const currentPageX = e.pageX;
-      const currentPageY = e.pageY;
-
-      const offsetWidth = (currentPageX - startPageX) / canvasScale;
-      const offsetHeight = (currentPageY - startPageY) / canvasScale;
+      const offsetWidth =
+        (currentPageX - startPageX) / store.storeData.canvasScale;
+      const offsetHeight =
+        (currentPageY - startPageY) / store.storeData.canvasScale;
 
       const width = Math.abs(offsetWidth);
       const height = Math.abs(offsetHeight);
@@ -67,14 +67,14 @@ export default (
       // 计算鼠标框选（移动）的方向
       // 按四个象限的位置区分，如右下角为第四象限
       let quadrant = 0;
+
       if (offsetWidth > 0 && offsetHeight > 0) quadrant = 4;
       else if (offsetWidth < 0 && offsetHeight < 0) quadrant = 1;
       else if (offsetWidth > 0 && offsetHeight < 0) quadrant = 2;
       else if (offsetWidth < 0 && offsetHeight > 0) quadrant = 3;
 
       // 更新框选范围
-      setMouseSelectionState({
-        ...mouseSelectionState,
+      dispatchState({
         isShow: true,
         quadrant,
         width,
@@ -85,18 +85,17 @@ export default (
     document.onmouseup = () => {
       document.onmousemove = null;
       document.onmouseup = null;
-      isMouseDown = false;
 
       // 计算画布中的元素是否处在鼠标选择范围中，处在范围中的元素设置为被选中状态
       let inRangeElementList: PPTElement[] = [];
       for (let i = 0; i < elementList.length; i++) {
         const element = elementList[i];
-        const mouseSelectionLeft = mouseSelectionState.left;
-        const mouseSelectionTop = mouseSelectionState.top;
-        const mouseSelectionWidth = mouseSelectionState.width;
-        const mouseSelectionHeight = mouseSelectionState.height;
+        const mouseSelectionLeft = state.left;
+        const mouseSelectionTop = state.top;
+        const mouseSelectionWidth = state.width;
+        const mouseSelectionHeight = state.height;
 
-        const quadrant = mouseSelectionState.quadrant;
+        const quadrant = state.quadrant;
 
         const { minX, maxX, minY, maxY } = getElementRange(element);
 
@@ -154,17 +153,15 @@ export default (
       const inRangeElementIdList = inRangeElementList.map(
         (inRangeElement) => inRangeElement.id,
       );
-      if (inRangeElementIdList.length)
-        setActiveElementIdList(inRangeElementIdList);
-      setMouseSelectionState({
-        ...mouseSelectionState,
-        isShow: false,
-      });
+      if (inRangeElementIdList.length) {
+        store.setActiveElementIdList(inRangeElementIdList);
+      }
+      dispatchState({ isShow: false });
     };
   };
 
   return {
-    mouseSelectionState,
+    mouseSelectionState: state,
     updateMouseSelection,
   };
 };

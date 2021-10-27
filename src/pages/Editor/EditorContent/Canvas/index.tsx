@@ -37,7 +37,7 @@ const Canvas: React.FC = () => {
   const store = useModel('usePagesModel.index');
   const canvasRemarkStore = useModel('useCanvasRemarkModel.index');
 
-  const gettterHook = useGetter();
+  const gettter = useGetter();
   const canvasRef = React.useRef(null);
   const viewportRef = React.useRef(null);
   const elementList = React.useRef<PPTElement[]>([]);
@@ -49,16 +49,11 @@ const Canvas: React.FC = () => {
   const ctrlKeyState = store.storeData.ctrlKeyState;
   const handleElementId = store.storeData.handleElementId;
   const editorAreaFocus = store.storeData.editorAreaFocus;
-  const ctrlOrShiftKeyActive = gettterHook.ctrlOrShiftKeyActive;
+  const ctrlOrShiftKeyActive = gettter.ctrlOrShiftKeyActive;
   const activeElementIdList = store.storeData.activeElementIdList;
   const activeGroupElementId = store.storeData.activeGroupElementId;
 
   const { viewportStyles } = useViewportSize(canvasRef);
-
-  const { mouseSelectionState, updateMouseSelection } = useMouseSelection(
-    elementList.current,
-    viewportRef,
-  );
 
   const { scaleElement, scaleMultiElement } = useScaleElement(
     elementList,
@@ -89,10 +84,14 @@ const Canvas: React.FC = () => {
     trailing: false,
   });
 
-  // // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
+  const { mouseSelectionState, updateMouseSelection } = useMouseSelection(
+    elementList.current,
+    viewportRef,
+  );
+  // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
   const handleClickBlankArea = (e: React.MouseEvent) => {
     store.setActiveElementIdList([]);
-    if (!gettterHook?.ctrlOrShiftKeyActive) updateMouseSelection(e);
+    if (!gettter?.ctrlOrShiftKeyActive) updateMouseSelection(e);
     if (!store.storeData.editorAreaFocus) store.setEditorAreaFocus(true);
     removeAllRanges();
   };
@@ -179,7 +178,11 @@ const Canvas: React.FC = () => {
           ))}
           <ViewportBackground />
         </div>
-        <div className={canvasPrefixCls('viewport')} ref={viewportRef}>
+        <div
+          className={canvasPrefixCls('viewport')}
+          style={{ transform: `scale(${canvasScale})` }}
+          ref={viewportRef}
+        >
           <DisplayView display={mouseSelectionState.isShow}>
             <MouseSelection
               top={mouseSelectionState.top}

@@ -21,6 +21,7 @@ export interface UpdateElementData {
 
 export default function usePagesModel() {
   const [store, dispatchStore] = useReducer(pageReducer, initStoreState);
+
   return {
     storeData: store as InitStoreStateType,
     setActiveElementIdList: (payload: string[]) =>
