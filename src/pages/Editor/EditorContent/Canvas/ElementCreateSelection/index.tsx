@@ -1,6 +1,7 @@
 import React from 'react';
 import { useModel } from 'umi';
 import classNames from 'classnames';
+import useGetter from '@/hooks/useGetter';
 import { utils } from 'react-dtcomponents';
 import SvgWrapper from '@/components/SvgWrapper';
 import DisplayView from '@/components/DisplayView';
@@ -22,9 +23,9 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
   onChange,
 }) => {
   const store = useModel('usePagesModel.index');
-  const getter = useModel('useGetterModel.index');
+  const getter = useGetter();
 
-  const ctrlOrShiftKeyActive = getter.ctrlOrShiftKeyActive();
+  const ctrlOrShiftKeyActive = getter.ctrlOrShiftKeyActive;
   const creatingElement = store.storeData.creatingElement;
 
   const selectionRef = React.useRef<any>(null);

@@ -19,6 +19,7 @@ export interface ViewportBackgroundProps {}
 const ViewportBackground = () => {
   const store = useModel('usePagesModel.index');
   const getter = useGetter();
+
   const showGridLines = store.storeData.showGridLines;
   const background = getter.currentSlide?.background;
 

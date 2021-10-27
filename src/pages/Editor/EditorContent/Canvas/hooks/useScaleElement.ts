@@ -506,7 +506,7 @@ export default (
 
   // 多选元素缩放
   const scaleMultiElement = (
-    e: MouseEvent,
+    e: React.MouseEvent,
     range: MultiSelectRange,
     command: OperateResizeHandlersTypes,
   ) => {
