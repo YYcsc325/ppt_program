@@ -5,7 +5,7 @@ import { ToolbarState } from '@/types/toolbar';
 
 import { theme } from '@/mocks/theme';
 import { slides } from '@/mocks/slides';
-import { defaultRichTextAttrs } from '@/utils/utils';
+import { defaultRichTextAttrs } from '@/utils/prosemirror/utils';
 
 export const initDvaGlobalState = {
   /** 被选中的元素ID集合，包含 handleElementId */

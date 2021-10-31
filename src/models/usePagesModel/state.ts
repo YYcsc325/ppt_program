@@ -3,7 +3,7 @@ import { slides } from '@/mocks/slides';
 import { CreatingElement } from '@/types/edit';
 import { ToolbarState } from '@/types/toolbar';
 import { SYS_FONTS_TYPE } from '@/config/font';
-import { defaultRichTextAttrs } from '@/utils/utils';
+import { defaultRichTextAttrs } from '@/utils/prosemirror/utils';
 
 export const initStoreState = {
   /** 被选中的元素ID集合，包含 handleElementId */

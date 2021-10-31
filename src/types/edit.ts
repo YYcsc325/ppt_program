@@ -92,7 +92,8 @@ export type ImageClipDataRange = [[number, number], [number, number]];
 
 export interface ImageClipData {
   range: ImageClipDataRange;
-  path: string;
+  path?: string;
+  shape?: string;
 }
 
 export interface ImageClipedEmitData {
