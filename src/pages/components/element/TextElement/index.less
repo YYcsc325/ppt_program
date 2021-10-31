@@ -1,4 +1,4 @@
-.ppt-editable-element-image {
+.ppt-editable-element-text {
   position: absolute;
 
   &-rotate-wrapper {
@@ -7,24 +7,18 @@
   }
 
   &-element-content {
-    width: 100%;
-    height: 100%;
     position: relative;
+    padding: 10px;
+    line-height: 1.5;
+    word-break: break-word;
     cursor: move;
-
-    img {
-      position: absolute;
-    }
   }
 
   &-lock {
     cursor: default;
   }
 
-  &-image-content {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  &-text {
     position: relative;
   }
 }

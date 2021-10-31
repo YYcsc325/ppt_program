@@ -3,7 +3,7 @@ import { useReducer } from 'react';
 import { CreatingElement } from '@/types/edit';
 import { StoreActions } from '@/consts/storeAction';
 import { ToolbarState } from '@/types/toolbar';
-import { TextAttrs } from '@/utils/utils';
+import { TextAttrs } from '@/utils/prosemirror/utils';
 import { Slide, PPTElement, SlideTheme } from '@/types/slides';
 
 import { initStoreState, InitStoreStateType } from './state';

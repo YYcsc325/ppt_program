@@ -167,6 +167,7 @@ export interface ImageElementFilters {
  */
 export interface ImageElementClip {
   range: [[number, number], [number, number]];
+  path?: string;
   shape: string;
 }
 
