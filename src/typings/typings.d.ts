@@ -15,3 +15,19 @@ declare interface Window {}
 declare var $: () => {};
 
 declare function show(params: string): void;
+
+/** 重新定义 HTMLElement */
+interface HTMLElement {
+  webkitRequestFullScreen(options?: FullscreenOptions): Promise<void>;
+  mozRequestFullScreen(options?: FullscreenOptions): Promise<void>;
+}
+
+/** 重新定义 Document*/
+interface Document {
+  mozFullScreen: boolean;
+  webkitIsFullScreen: boolean;
+  webkitFullScreen: boolean;
+
+  mozCancelFullScreen(): Promise<void>;
+  webkitCancelFullScreen(): Promise<void>;
+}

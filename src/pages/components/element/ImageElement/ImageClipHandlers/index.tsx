@@ -2,7 +2,6 @@ import React from 'react';
 import { useModel } from 'umi';
 import classNames from 'classnames';
 import { utils } from 'react-dtcomponents';
-import useGetter from '@/hooks/useGetter';
 import { ACTION_KEYS } from '@/config/actionHotKey';
 import SvgWrapper from '@/components/SvgWrapper';
 import {
@@ -47,10 +46,9 @@ function reducer(state: any, data: any) {
 
 const ImageClipHandlers: React.FC<ImageClipHandlersProps> = (props) => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
   const canvasScale = store.storeData.canvasScale;
-  const ctrlOrShiftKeyActive = getter.ctrlOrShiftKeyActive;
+  const ctrlOrShiftKeyActive = store.getterData.ctrlOrShiftKeyActive;
 
   const [clipWrapperPositionStyle, dispatchClipPosStyle] = React.useReducer(
     reducer,
@@ -500,8 +498,8 @@ const ImageClipHandlers: React.FC<ImageClipHandlersProps> = (props) => {
             >
               <SvgWrapper width={16} height={16} fill="#fff" stroke="#333">
                 <path
-                  stroke-width="0.3"
-                  shape-rendering="crispEdges"
+                  strokeWidth="0.3"
+                  shapeRendering="crispEdges"
                   d="M 16 0 L 0 0 L 0 16 L 4 16 L 4 4 L 16 4 L 16 0 Z"
                 ></path>
               </SvgWrapper>
@@ -517,8 +515,8 @@ const ImageClipHandlers: React.FC<ImageClipHandlersProps> = (props) => {
             >
               <SvgWrapper width={16} height={16} fill="#fff" stroke="#333">
                 <path
-                  stroke-width="0.3"
-                  shape-rendering="crispEdges"
+                  strokeWidth="0.3"
+                  shapeRendering="crispEdges"
                   d="M 16 0 L 0 0 L 0 4 L 16 4 Z"
                 ></path>
               </SvgWrapper>

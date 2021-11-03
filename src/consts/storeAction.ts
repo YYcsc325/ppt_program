@@ -47,4 +47,12 @@ export const StoreActions = {
   INIT_SNAPSHOT_DATABASE: 'initSnapshotDatabase',
   UN_DO: 'unDo',
   RE_DO: 'reDo',
-};
+} as const;
+
+export const StoreActionsValues = Object.values(StoreActions);
+
+export const StoreActionsKeys = Object.keys(StoreActions);
+
+export type StoreActionsValuesType = typeof StoreActionsValues;
+
+export type StoreActionsKeysType = typeof StoreActionsKeys;

@@ -1,5 +1,4 @@
 import { useModel } from 'umi';
-import useGetter from '@/hooks/useGetter';
 import { pasteCustomClipboardString } from '@/utils/clipboard';
 import { PPTElement, Slide } from '@/types/slides';
 import { createRandomCode } from '@/utils/common';
@@ -15,9 +14,8 @@ interface PasteTextClipboardDataOptions {
 
 export default () => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
-  const currentSlide = getter.currentSlide;
+  const currentSlide = store.getterData.currentSlide;
 
   const { addHistorySnapshot } = useHistorySnapshot();
   const { createTextElement } = useCreateElement();

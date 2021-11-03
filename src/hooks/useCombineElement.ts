@@ -1,17 +1,15 @@
 import React from 'react';
 import { useModel } from 'umi';
-import useGetter from '@/hooks/useGetter';
 import { PPTElement } from '@/types/slides';
 import { createRandomCode } from '@/utils/common';
 import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
 export default () => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
+  const activeElementList = store.getterData.activeElementList;
+  const currentSlide = store.getterData.currentSlide;
   const activeElementIdList = store.storeData.activeElementIdList;
-  const activeElementList = getter.activeElementList;
-  const currentSlide = getter.currentSlide;
   const handleElementId = store.storeData.handleElementId;
 
   const { addHistorySnapshot } = useHistorySnapshot();

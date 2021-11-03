@@ -1,8 +1,10 @@
-import { useReducer } from 'react';
+import tinycolor from 'tinycolor2';
+import React, { useReducer } from 'react';
 
 import { CreatingElement } from '@/types/edit';
 import { StoreActions } from '@/consts/storeAction';
 import { ToolbarState } from '@/types/toolbar';
+import { layouts as layout } from '@/mocks/layout';
 import { TextAttrs } from '@/utils/prosemirror/utils';
 import { Slide, PPTElement, SlideTheme } from '@/types/slides';
 
@@ -22,8 +24,70 @@ export interface UpdateElementData {
 export default function usePagesModel() {
   const [store, dispatchStore] = useReducer(pageReducer, initStoreState);
 
+  const currentSlide = store.slides[store.slideIndex] || null;
+  const canUndo = store.snapshotCursor > 0;
+  const canRedo = store.snapshotCursor < store.snapshotLength - 1;
+  const ctrlOrShiftKeyActive = store.ctrlKeyState || store.shiftKeyState;
+
+  const activeElementList = React.useMemo(() => {
+    const currentSlide = store.slides[store.slideIndex];
+    if (!currentSlide || !currentSlide.elements) return [];
+    return currentSlide.elements.filter((element) =>
+      store.activeElementIdList.includes(element.id),
+    );
+  }, [store.slides, store.slideIndex]);
+
+  const handleElement = React.useMemo(() => {
+    const currentSlide = store.slides[store.slideIndex];
+    if (!currentSlide || !currentSlide.elements) return null;
+    return (
+      currentSlide.elements.find(
+        (element) => store.handleElementId === element.id,
+      ) || null
+    );
+  }, [store.slides, store.slideIndex]);
+
+  const currentSlideAnimations = React.useMemo(() => {
+    const currentSlide = store.slides[store.slideIndex];
+    if (!currentSlide) return null;
+    const animations = currentSlide.animations;
+    if (!animations) return null;
+
+    const els = currentSlide.elements;
+    const elIds = els.map((el) => el.id);
+    return animations.filter((animation) => elIds.includes(animation.elId));
+  }, [store.slides, store.slideIndex]);
+
+  const layouts = React.useMemo(() => {
+    const { themeColor, fontColor, fontName, backgroundColor } = store.theme;
+
+    const subColor = tinycolor(fontColor).isDark()
+      ? 'rgba(230, 230, 230, 0.5)'
+      : 'rgba(180, 180, 180, 0.5)';
+
+    const layoutsString = JSON.stringify(layout)
+      .replaceAll('{{themeColor}}', themeColor)
+      .replaceAll('{{fontColor}}', fontColor)
+      .replaceAll('{{fontName}}', fontName)
+      .replaceAll('{{backgroundColor}}', backgroundColor)
+      .replaceAll('{{subColor}}', subColor);
+
+    return JSON.parse(layoutsString);
+  }, [store.theme]);
+
   return {
-    storeData: store as InitStoreStateType,
+    activeElementList,
+    storeData: store,
+    getterData: {
+      canUndo,
+      canRedo,
+      layouts,
+      currentSlide,
+      handleElement,
+      activeElementList,
+      ctrlOrShiftKeyActive,
+      currentSlideAnimations,
+    },
     setActiveElementIdList: (payload: string[]) =>
       dispatchStore({ type: StoreActions.SET_ACTIVE_ELEMENT_ID_LIST, payload }),
     setHandleElementId: (payload: string) =>

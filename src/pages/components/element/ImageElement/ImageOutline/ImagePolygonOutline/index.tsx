@@ -26,15 +26,14 @@ const ImagePolygonOutline: React.FC<ImagePolygonOutlineProps> = (props) => {
     <DisplayView display={Boolean(outline)}>
       <SvgWrapper width={width} height={height} className={prefixCls()}>
         <path
-          vector-effect="non-scaling-stroke"
-          stroke-linecap="butt"
-          stroke-miterlimit="8"
-          stroke-linejoin
+          vectorEffect="non-scaling-stroke"
+          strokeLinecap="butt"
+          strokeMiterlimit="8"
           fill="transparent"
           d={createPath(width, height)}
           stroke={outlineColor}
-          stroke-width={outlineWidth}
-          stroke-dasharray={outlineStyle === 'dashed' ? '10 6' : '0 0'}
+          strokeWidth={outlineWidth}
+          strokeDasharray={outlineStyle === 'dashed' ? '10 6' : '0 0'}
         />
       </SvgWrapper>
     </DisplayView>

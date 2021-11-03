@@ -1,15 +1,13 @@
 import { useModel } from 'umi';
-import useGetter from '@/hooks/useGetter';
 import { PPTElement } from '@/types/slides';
 import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
 export default () => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
   const activeElementIdList = store.storeData.activeElementIdList;
   const activeGroupElementId = store.storeData.activeGroupElementId;
-  const currentSlide = getter.currentSlide;
+  const currentSlide = store.getterData.currentSlide;
 
   const { addHistorySnapshot } = useHistorySnapshot();
 

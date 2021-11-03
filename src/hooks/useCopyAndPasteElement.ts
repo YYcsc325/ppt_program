@@ -1,5 +1,4 @@
 import { useModel } from 'umi';
-import useGetter from '@/hooks/useGetter';
 import { copyText, readClipboard } from '@/utils/clipboard';
 import { encrypt } from '@/utils/crypto';
 import { message } from 'antd';
@@ -8,10 +7,9 @@ import useDeleteElement from './useDeleteElement';
 
 export default () => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
   const activeElementIdList = store.storeData.activeElementIdList;
-  const activeElementList = getter.activeElementList;
+  const activeElementList = store.getterData.activeElementList;
 
   const { pasteTextClipboardData } = usePasteTextClipboardData();
   const { deleteElement } = useDeleteElement();

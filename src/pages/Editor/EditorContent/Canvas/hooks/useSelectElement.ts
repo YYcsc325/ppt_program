@@ -1,6 +1,5 @@
 import { useModel } from 'umi';
 import { uniq } from 'lodash';
-import useGetter from '@/hooks/useGetter';
 import { PPTElement } from '@/types/slides';
 
 export default (
@@ -8,13 +7,12 @@ export default (
   moveElement: (e: React.MouseEvent, element: PPTElement) => void,
 ) => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
   const activeElementIdList = store.storeData.activeElementIdList;
   const handleElementId = store.storeData.handleElementId;
   const activeGroupElementId = store.storeData.activeGroupElementId;
   const editorAreaFocus = store.storeData.editorAreaFocus;
-  const ctrlOrShiftKeyActive = getter.ctrlOrShiftKeyActive;
+  const ctrlOrShiftKeyActive = store.getterData.ctrlOrShiftKeyActive;
 
   // 选中元素
   // startMove 表示是否需要再选中操作后进入到开始移动的状态

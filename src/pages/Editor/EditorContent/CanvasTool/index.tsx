@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import { IconFont } from '@/components';
 import { utils } from 'react-dtcomponents';
 
-import useGetter from '@/hooks/useGetter';
 import useScaleCanvas from '@/hooks/useScaleCanvas';
 import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
@@ -15,11 +14,10 @@ const canvasToolPrefixCls = utils.createPrefixCls('canvas-tool', styles, 'ppt');
 
 const CanvasTool: React.FC = () => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
   const canvasScale = store.storeData.canvasScale;
-  const canUndo = getter.canUndo;
-  const canRedo = getter.canRedo;
+  const canUndo = store.getterData.canUndo;
+  const canRedo = store.getterData.canRedo;
 
   const { redo, undo } = useHistorySnapshot();
   const canvasScalePercentage = parseInt(canvasScale * 100 + '') + '%';

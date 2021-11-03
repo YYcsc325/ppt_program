@@ -7,10 +7,14 @@ import { AlignmentLineProps } from '@/types/edit';
 import DisplayView from '@/components/DisplayView';
 import { ACTION_KEYS } from '@/config/actionHotKey';
 import { removeAllRanges } from '@/utils/selection';
+import { ContextmenuItem } from '@/components/Contextmenu/types';
 
-import useGetter from '@/hooks/useGetter';
+import useScreening from '@/hooks/useScreening';
 import useScaleCanvas from '@/hooks/useScaleCanvas';
 import useSlideHandler from '@/hooks/useSlideHandler';
+import useDeleteElement from '@/hooks/useDeleteElement';
+import useSelectAllElement from '@/hooks/useSelectAllElement';
+import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement';
 
 import Operate from './Operate';
 import AlignmentLine from './AlignmentLine';
@@ -37,7 +41,6 @@ const Canvas: React.FC = () => {
   const store = useModel('usePagesModel.index');
   const canvasRemarkStore = useModel('useCanvasRemarkModel.index');
 
-  const gettter = useGetter();
   const canvasRef = React.useRef(null);
   const viewportRef = React.useRef(null);
   const elementList = React.useRef<PPTElement[]>([]);
@@ -47,32 +50,43 @@ const Canvas: React.FC = () => {
 
   const canvasScale = store.storeData.canvasScale;
   const ctrlKeyState = store.storeData.ctrlKeyState;
+  const showGridLines = store.storeData.showGridLines;
+  const creatingElement = store.storeData.creatingElement;
   const handleElementId = store.storeData.handleElementId;
   const editorAreaFocus = store.storeData.editorAreaFocus;
-  const ctrlOrShiftKeyActive = gettter.ctrlOrShiftKeyActive;
   const activeElementIdList = store.storeData.activeElementIdList;
   const activeGroupElementId = store.storeData.activeGroupElementId;
 
-  const { viewportStyles } = useViewportSize(canvasRef);
+  const currentSlide = store.getterData.currentSlide;
+  const ctrlOrShiftKeyActive = store.getterData.ctrlOrShiftKeyActive;
 
+  const ecsVisible = Boolean(creatingElement);
+  const msoVisible = Boolean(activeElementIdList.length > 1);
+
+  /** 进入放映 */
+  const { enterScreening } = useScreening();
+  /** 滚动鼠标 */
+  const { scaleCanvas } = useScaleCanvas();
+  const { updateSlideIndex } = useSlideHandler();
+  const { deleteAllElements } = useDeleteElement();
+  const { pasteElement } = useCopyAndPasteElement();
+  const { selectAllElement } = useSelectAllElement();
+  const { viewportStyles } = useViewportSize(canvasRef);
+  const { dragLineElement } = useDragLineElement(elementList);
+  const { dragElement } = useDragElement(elementList, alignmentLines);
+  const { selectElement } = useSelectElement(elementList, dragElement);
+  const { rotateElement } = useRotateElement(elementList, viewportRef);
   const { scaleElement, scaleMultiElement } = useScaleElement(
     elementList,
     alignmentLines,
   );
-
-  const { dragElement } = useDragElement(elementList, alignmentLines);
-  const { dragLineElement } = useDragLineElement(elementList);
-  const { selectElement } = useSelectElement(elementList, dragElement);
-  const { rotateElement } = useRotateElement(elementList, viewportRef);
-
-  // const { selectAllElement } = useSelectAllElement()
-  // const { deleteAllElements } = useDeleteElement()
-  // const { pasteElement } = useCopyAndPasteElement()
-  // const { enterScreening } = useScreening()
-
-  // 滚动鼠标
-  const { scaleCanvas } = useScaleCanvas();
-  const { updateSlideIndex } = useSlideHandler();
+  const { mouseSelectionState, updateMouseSelection } = useMouseSelection(
+    elementList.current,
+    viewportRef,
+  );
+  /** 在鼠标绘制的范围插入元素 */
+  const { insertElementFromCreateSelection } =
+    useInsertFromCreateSelection(viewportRef);
 
   const throttleScaleCanvas = throttle(scaleCanvas, 100, {
     leading: true,
@@ -84,23 +98,18 @@ const Canvas: React.FC = () => {
     trailing: false,
   });
 
-  const { mouseSelectionState, updateMouseSelection } = useMouseSelection(
-    elementList.current,
-    viewportRef,
-  );
   // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
   const handleClickBlankArea = (e: React.MouseEvent) => {
     store.setActiveElementIdList([]);
-    if (!gettter?.ctrlOrShiftKeyActive) updateMouseSelection(e);
-    if (!store.storeData.editorAreaFocus) store.setEditorAreaFocus(true);
+    if (!ctrlOrShiftKeyActive) updateMouseSelection(e);
+    if (!editorAreaFocus) store.setEditorAreaFocus(true);
     removeAllRanges();
   };
 
   const handleMousewheelCanvas = (e: React.WheelEvent) => {
     e.preventDefault();
-
     // 按住Ctrl键时：缩放画布
-    if (store.storeData.ctrlKeyState) {
+    if (ctrlKeyState) {
       if (e.deltaY > 0) throttleScaleCanvas('-');
       else if (e.deltaY < 0) throttleScaleCanvas('+');
     }
@@ -111,25 +120,67 @@ const Canvas: React.FC = () => {
     }
   };
 
-  // 在鼠标绘制的范围插入元素
-  const creatingElement = store.storeData.creatingElement;
-  const { insertElementFromCreateSelection } =
-    useInsertFromCreateSelection(viewportRef);
-
-  const ecsVisible = Boolean(creatingElement);
-  const msoVisible = Boolean(activeElementIdList.length > 1);
-
   const openLinkDialog = () => {
     setLinkDialogVisible(true);
+  };
+
+  // 开关网格线
+  const toggleGridLines = () => {
+    store.setShowGridLines(!showGridLines);
+  };
+
+  React.useEffect(() => {
+    elementList.current = currentSlide
+      ? JSON.parse(JSON.stringify(currentSlide.elements))
+      : [];
+  }, [currentSlide]);
+
+  const contextmenus = (): ContextmenuItem[] => {
+    return [
+      {
+        text: '粘贴',
+        subText: 'Ctrl + V',
+        handler: pasteElement,
+      },
+      {
+        text: '全选',
+        subText: 'Ctrl + A',
+        handler: selectAllElement,
+      },
+      {
+        text: '网格线',
+        subText: showGridLines ? '√' : '',
+        handler: toggleGridLines,
+      },
+      {
+        text: '重置当前页',
+        handler: deleteAllElements,
+      },
+      { divider: true },
+      {
+        text: '从当前页演示',
+        subText: 'Ctrl+F',
+        handler: enterScreening,
+      },
+    ];
+  };
+
+  const canvasStyle = {
+    height: `calc(100% - ${canvasRemarkStore.canvasRemarkHeight + 40}px)`,
+  };
+
+  const viewportWrapperStyle = {
+    width: viewportStyles.width * canvasScale + 'px',
+    height: viewportStyles.height * canvasScale + 'px',
+    left: viewportStyles.left + 'px',
+    top: viewportStyles.top + 'px',
   };
 
   return (
     <div
       ref={canvasRef}
+      style={canvasStyle}
       className={canvasPrefixCls()}
-      style={{
-        height: `calc(100% - ${canvasRemarkStore.canvasRemarkHeight + 40}px)`,
-      }}
       onWheel={handleMousewheelCanvas}
       onMouseDown={handleClickBlankArea}
     >
@@ -137,13 +188,8 @@ const Canvas: React.FC = () => {
         <ElementCreateSelection onChange={insertElementFromCreateSelection} />
       </DisplayView>
       <div
+        style={viewportWrapperStyle}
         className={canvasPrefixCls('viewport-wrapper')}
-        style={{
-          width: viewportStyles.width * canvasScale + 'px',
-          height: viewportStyles.height * canvasScale + 'px',
-          left: viewportStyles.left + 'px',
-          top: viewportStyles.top + 'px',
-        }}
       >
         <div className={canvasPrefixCls('operates')}>
           {alignmentLines.current.map((line, index) => {
@@ -179,9 +225,9 @@ const Canvas: React.FC = () => {
           <ViewportBackground />
         </div>
         <div
+          ref={viewportRef}
           className={canvasPrefixCls('viewport')}
           style={{ transform: `scale(${canvasScale})` }}
-          ref={viewportRef}
         >
           <DisplayView display={mouseSelectionState.isShow}>
             <MouseSelection

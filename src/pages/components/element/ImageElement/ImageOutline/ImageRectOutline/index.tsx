@@ -26,18 +26,17 @@ const ImageRectOutline: React.FC<ImageRectOutlineProps> = (props) => {
     <DisplayView display={Boolean(outline)}>
       <SvgWrapper width={width} height={height} className={prefixCls()}>
         <rect
-          vector-effect="non-scaling-stroke"
-          stroke-linecap="butt"
-          stroke-miterlimit="8"
-          stroke-linejoin
+          vectorEffect="non-scaling-stroke"
+          strokeLinecap="butt"
+          strokeMiterlimit="8"
           fill="transparent"
           rx={radius}
           ry={radius}
           width={width}
           height={height}
           stroke={outlineColor}
-          stroke-width={outlineWidth}
-          stroke-dasharray={outlineStyle === 'dashed' ? '10 6' : '0 0'}
+          strokeWidth={outlineWidth}
+          strokeDasharray={outlineStyle === 'dashed' ? '10 6' : '0 0'}
         />
       </SvgWrapper>
     </DisplayView>
