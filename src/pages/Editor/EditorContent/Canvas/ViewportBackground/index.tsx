@@ -1,7 +1,6 @@
 import React from 'react';
 import { useModel } from 'umi';
 import { utils } from 'react-dtcomponents';
-import useGetter from '@/hooks/useGetter';
 import DisplayView from '@/components/DisplayView';
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle';
 
@@ -18,10 +17,9 @@ export interface ViewportBackgroundProps {}
 
 const ViewportBackground = () => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
   const showGridLines = store.storeData.showGridLines;
-  const background = getter.currentSlide?.background;
+  const background = store.getterData.currentSlide?.background;
 
   const { backgroundStyle } = useSlideBackgroundStyle(background);
 

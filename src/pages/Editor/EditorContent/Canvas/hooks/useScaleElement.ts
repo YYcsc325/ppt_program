@@ -1,5 +1,4 @@
 import { useModel } from 'umi';
-import useGetter from '@/hooks/useGetter';
 import { MIN_SIZE } from '@/config/element';
 import { VIEWPORT_SIZE } from '@/config/canvas';
 import { AlignLine, uniqAlignLines } from '@/utils/element';
@@ -119,13 +118,12 @@ export default (
   alignmentLines: { current: AlignmentLineProps[] },
 ) => {
   const store = useModel('usePagesModel.index');
-  const getterHook = useGetter();
 
   const canvasScale = store.storeData.canvasScale;
   const viewportRatio = store.storeData.viewportRatio;
   const activeElementIdList = store.storeData.activeElementIdList;
   const activeGroupElementId = store.storeData.activeGroupElementId;
-  const ctrlOrShiftKeyActive = getterHook.ctrlOrShiftKeyActive;
+  const ctrlOrShiftKeyActive = store.getterData.ctrlOrShiftKeyActive;
 
   const { addHistorySnapshot } = useHistorySnapshot();
 

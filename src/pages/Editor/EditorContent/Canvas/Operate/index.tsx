@@ -2,7 +2,6 @@ import React from 'react';
 import { useModel } from 'umi';
 import classNames from 'classnames';
 import { utils } from 'react-dtcomponents';
-import useGetter from '@/hooks/useGetter';
 import { DisplayView } from '@/components';
 import { OperateLineHandler, OperateResizeHandler } from '@/types/edit';
 import { ElementTypes, PPTElement, PPTLineElement } from '@/types/slides';
@@ -62,11 +61,10 @@ const Operate: React.FC<OperateProps> = (props) => {
   } = props;
 
   const store = useModel('usePagesModel.index');
-  const getters = useGetter();
 
   const canvasScale = store.storeData.canvasScale;
   const toolbarState = store.storeData.toolbarState;
-  const currentSlide = getters.currentSlide;
+  const currentSlide = store.getterData.currentSlide;
 
   const Component = elementTypeMap[elementInfo.type] || elementTypeMap.DEFAULT;
 

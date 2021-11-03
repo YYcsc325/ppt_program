@@ -1,7 +1,6 @@
 import React from 'react';
 import { useModel } from 'umi';
 import tinycolor from 'tinycolor2';
-import useGetter from '@/hooks/useGetter';
 import { utils } from 'react-dtcomponents';
 import SvgWrapper from '@/components/SvgWrapper';
 import { VIEWPORT_SIZE } from '@/config/canvas';
@@ -14,11 +13,10 @@ const gridSize = 50;
 
 const GridLines = () => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
   const canvasScale = store.storeData.canvasScale;
   const viewportRatio = store.storeData.viewportRatio;
-  const background = getter.currentSlide?.background;
+  const background = store.getterData.currentSlide?.background;
 
   // 计算网格线的颜色，避免与背景的颜色太接近
   const gridColor = React.useMemo(() => {
@@ -51,8 +49,8 @@ const GridLines = () => {
         d={getPath()}
         style={{ transform: `scale(${canvasScale})` }}
         fill="none"
-        stroke-width="0.3"
-        stroke-dasharray="5"
+        strokeWidth="0.3"
+        strokeDasharray="5"
         stroke={gridColor}
       />
     </SvgWrapper>

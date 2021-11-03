@@ -1,5 +1,4 @@
 import { useModel } from 'umi';
-import useGetter from '@/hooks/useGetter';
 import { PPTElement } from '@/types/slides';
 import { ElementAlignCommand, ElementAlignCommands } from '@/types/edit';
 import { getElementListRange } from '@/utils/element';
@@ -8,12 +7,11 @@ import useHistorySnapshot from './useHistorySnapshot';
 
 export default () => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
   const activeElementIdList = store.storeData.activeElementIdList;
   const viewportRatio = store.storeData.viewportRatio;
-  const activeElementList = getter.activeElementList;
-  const currentSlide = getter.currentSlide;
+  const activeElementList = store.getterData.activeElementList;
+  const currentSlide = store.getterData.currentSlide;
 
   const { addHistorySnapshot } = useHistorySnapshot();
 

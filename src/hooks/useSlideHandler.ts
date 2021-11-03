@@ -1,7 +1,6 @@
 import { message } from 'antd';
 import { useModel } from 'umi';
 import { Slide } from '@/types/slides';
-import useGetter from '@/hooks/useGetter';
 import { createRandomCode } from '@/utils/common';
 import { copyText, readClipboard } from '@/utils/clipboard';
 import { encrypt } from '@/utils/crypto';
@@ -13,12 +12,11 @@ import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData';
 
 export default () => {
   const store = useModel('usePagesModel.index');
-  const getters = useGetter();
 
   const slideIndex = store.storeData.slideIndex;
   const theme = store.storeData.theme;
   const slides = store.storeData.slides;
-  const currentSlide = getters.currentSlide;
+  const currentSlide = store.getterData.currentSlide;
 
   const selectedSlidesIndex = [
     ...store.storeData.selectedSlidesIndex,

@@ -3,7 +3,7 @@ import { set, omit } from 'lodash';
 
 import { isSupportFont } from '@/utils/font';
 import { CreatingElement } from '@/types/edit';
-import { StoreActions } from '@/consts/storeAction';
+import { StoreActions, StoreActionsValuesType } from '@/consts/storeAction';
 import { ToolbarState } from '@/types/toolbar';
 import { SYS_FONTS } from '@/config/font';
 import { TextAttrs } from '@/utils/prosemirror/utils';
@@ -12,11 +12,14 @@ import { Slide, PPTElement, SlideTheme } from '@/types/slides';
 import { InitStoreStateType } from './state';
 import { RemoveElementPropData, UpdateElementData } from './index';
 
-export function pageReducer(state: InitStoreStateType, { type, payload }: any) {
+export function pageReducer(
+  state: InitStoreStateType,
+  { type, payload }: { type: string; payload?: any },
+): InitStoreStateType {
   const newSlides = [...state.slides];
   const slideIndex = state.slideIndex;
 
-  const map = {
+  const map: any = {
     [StoreActions.SET_ACTIVE_ELEMENT_ID_LIST]: (
       activeElementIdList: string[],
     ) => {
@@ -228,6 +231,6 @@ export function pageReducer(state: InitStoreStateType, { type, payload }: any) {
     },
   };
 
-  if (map[type]) return map[type](payload as never);
+  if (map[type]) return map[type](payload as never) as InitStoreStateType;
   return { ...state, ...payload };
 }

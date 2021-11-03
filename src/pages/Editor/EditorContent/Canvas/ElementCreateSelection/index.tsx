@@ -1,7 +1,6 @@
 import React from 'react';
 import { useModel } from 'umi';
 import classNames from 'classnames';
-import useGetter from '@/hooks/useGetter';
 import { utils } from 'react-dtcomponents';
 import SvgWrapper from '@/components/SvgWrapper';
 import DisplayView from '@/components/DisplayView';
@@ -23,9 +22,8 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
   onChange,
 }) => {
   const store = useModel('usePagesModel.index');
-  const getter = useGetter();
 
-  const ctrlOrShiftKeyActive = getter.ctrlOrShiftKeyActive;
+  const ctrlOrShiftKeyActive = store.getterData.ctrlOrShiftKeyActive;
   const creatingElement = store.storeData.creatingElement;
 
   const selectionRef = React.useRef<any>(null);
@@ -211,10 +209,7 @@ const ElementCreateSelection: React.FC<ElementCreateSelectionProps> = ({
                 d={lineData?.path}
                 stroke="#d14424"
                 fill="none"
-                stroke-width="1"
-                stroke-linecap
-                stroke-linejoin
-                stroke-miterlimit
+                strokeWidth="1"
               />
             </SvgWrapper>
           </DisplayView>
